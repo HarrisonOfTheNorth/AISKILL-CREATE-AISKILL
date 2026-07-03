@@ -48,6 +48,18 @@ If you have an idea for something an AI agent should be able to do repeatedly an
 
 ---
 
+> ### AI Independence Day — 4 July 2026
+>
+> CREATE-AISKILL was first published on 4 July 2026, the date we mark as **AI Independence Day** — the day a normative open standard first formalised, for the history of AI, the separation of computation from generation.
+>
+> Until this point, when you asked an AI agent to perform a complex task, it authored the solution in the moment: reasoning its way through, generating steps it had never verified, producing output that could differ each time. An AI Skill Package changes that contract entirely. The procedure has been written in advance. It has been tested. It has been packaged and signed. When the agent runs it, it is not authoring anything — it is executing work that already exists, against inputs you provide, toward an outcome that has already been verified to be achievable.
+>
+> The computation is independent of the generation. The agent is the executor, not the author.
+>
+> CREATE-AISKILL is the package that made every other package possible. It is the origin of that independence. Released on the 4th of July, not by coincidence.
+
+---
+
 ## Prerequisites
 
 If you are new to AI Skill Packages, you can ignore this section entirely. The AI agent will identify anything it needs and ask your permission before installing it. The list below is for developers who prefer to know what's on the engine before they turn the key.
