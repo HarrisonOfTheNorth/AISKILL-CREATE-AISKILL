@@ -1,0 +1,30 @@
+name: Create AI Skill Package
+id: com.openaiskillpackage.create-aiskill
+uuid: a1805527-85e9-4002-9ab3-770084e9b45c
+version: 1.0.0
+description: Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
+author: Anthony Harrison
+authorEmail: widgets@penrithbeacon.com
+entry: SKILL.md
+license: MIT
+minimum_runtime: "1.0.0"
+capabilities:
+  - filesystem.read
+  - filesystem.write
+  - process.exec
+permissions:
+  filesystem.write:
+    paths:
+      - "<aiskills_root>/AISKILL-*"
+homepage: https://openaiskillpackage.com/
+repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
+tags: [scaffold, create, aiskill, package, generator, meta]
+type: procedural
+changelog:
+  - version: 1.0.0
+    changes:
+      - Initial release — the meta-skill for creating .aiskill packages
+      - scaffold.py — creates complete AISKILL-{SLUG} repo and directory structure
+      - pack.py — generates checksums.yaml and packages the .aiskill archive
+      - Six template files covering all required skill artifacts
+      - Unit tests for all scaffold utility functions

@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Create AI Skill Package Inputs",
+  "description": "Inputs accepted by scaffold.py to create a new AISKILL-{SLUG} repository.",
+  "type": "object",
+  "required": [
+    "aiskills_root",
+    "name",
+    "description",
+    "author",
+    "author_email",
+    "type",
+    "id_domain",
+    "github_org"
+  ],
+  "properties": {
+    "aiskills_root": {
+      "type": "string",
+      "description": "Absolute path to the folder containing all AISKILL repos (e.g. /Volumes/ai-skill-packages/aiskills)."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable skill name (e.g. 'WCAG Contrast Audit'). The UPPER-KEBAB-CASE slug is auto-derived from this."
+    },
+    "description": {
+      "type": "string",
+      "description": "One-line purpose statement written in the third person (e.g. 'Audits foreground/background colour pairs for WCAG 2.1 contrast compliance.')."
+    },
+    "author": {
+      "type": "string",
+      "description": "Author name or organisation name."
+    },
+    "author_email": {
+      "type": "string",
+      "format": "email",
+      "description": "Contact email address for the author."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["procedural", "analytical", "generative"],
+      "description": "Skill type: procedural (step-by-step), analytical (evaluate/report), or generative (produce content)."
+    },
+    "id_domain": {
+      "type": "string",
+      "description": "Reverse-domain prefix for the manifest id field (e.g. com.openaiskillpackage). Must be a domain you control."
+    },
+    "github_org": {
+      "type": "string",
+      "description": "GitHub organisation or user name (e.g. YourGitHubOrg). Used to construct the remote URL: https://github.com/{github_org}/AISKILL-{SLUG}.git"
+    },
+    "license": {
+      "type": "string",
+      "default": "MIT",
+      "description": "SPDX licence identifier (e.g. MIT, Apache-2.0) or 'Proprietary'."
+    },
+    "capabilities": {
+      "type": "string",
+      "default": "filesystem.read,filesystem.write,process.exec",
+      "description": "Comma-separated capability tokens (e.g. filesystem.read,filesystem.write,process.exec)."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9-]*[A-Z0-9]$",
+      "description": "Override the auto-derived UPPER-KEBAB-CASE slug. If omitted, derived from --name."
+    }
+  },
+  "additionalProperties": false
+}

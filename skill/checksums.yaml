@@ -1,0 +1,17 @@
+algorithm: sha256
+files:
+  CHANGELOG.md: efda36ab967293eea2c1c097321f73c3f9571121d204fe086aee64d61c407edf
+  README.md: 3ac29a7304923c3062b5077c8c8c053f1fb48601d04e2fbbc733ecbc1198e50d
+  SKILL.md: 6cf4f4bd4654b79d3a9ff378e72141d26ff35d283ea3781cb53a855d7402bbe7
+  assets/scripts/pack.py: fb53f036d513658d18d8079703520ff45f302c44cb008a0ea8094e3dc9cc82bc
+  assets/scripts/scaffold.py: 212e4681b88e345077a088cd0593814c1afbafa082f939d2686baf305e68f261
+  assets/templates/CHANGELOG.md.template: 0bbde63fa7a5918776289660292677054a69319abaf6d743cc9fda4ef75b186a
+  assets/templates/README.repo.md.template: 2c927f82ea541f6b59891c209be984d87e44a6ff75bb98c72215208e46a4358d
+  assets/templates/README.skill.md.template: 83f6a9210f27537108f7c4f65b7b75f40ae6ebe74223e560985cbcac5503956d
+  assets/templates/SKILL.md.template: 8adb74f84ca82a50dc99bb69854efefa6b5880d860b6e97315e32b9660cd8892
+  assets/templates/gitignore.template: 516e63c2ff5820dcfb628fa5cc4b63557dc3e294e446448e3bcbd35f473c1d6f
+  assets/templates/manifest.yaml.template: 7f0c03e0a5c61f95da62ad4102db3421a22823cab07a3b9d9d11243fe8654a7a
+  assets/templates/schema.json.template: 1bd6afcf36825d3e9b2e4dab0db078312e26932aa857ae7f2e2dea680e030e90
+  assets/tests/test_scaffold.py: 138a4907c4b1002158706819da78e4944882b58825db22c937b560a857db2c55
+  inputs/schema.json: 58af754787aca3dee38a197e838958ce984f58792cafadb62c7f13112c8823e3
+  manifest.yaml: 1ff02d9cea65ca00436de36a5f2c71eff1f703d0ceaecd8a8280cdaf0af8f8c0

@@ -1,0 +1,20 @@
+name: <<<NAME>>>
+id: <<<ID>>>
+uuid: <<<UUID>>>
+version: <<<VERSION>>>
+description: <<<DESCRIPTION>>>
+author: <<<AUTHOR>>>
+authorEmail: <<<AUTHOR_EMAIL>>>
+entry: SKILL.md
+license: <<<LICENSE>>>
+minimum_runtime: "<<<MINIMUM_RUNTIME>>>"
+capabilities:
+<<<CAPABILITIES_LIST>>>
+homepage: <<<HOMEPAGE>>>
+repository: <<<REPOSITORY>>>
+tags: <<<TAGS>>>
+type: <<<TYPE>>>
+changelog:
+  - version: <<<VERSION>>>
+    changes:
+      - Initial release
