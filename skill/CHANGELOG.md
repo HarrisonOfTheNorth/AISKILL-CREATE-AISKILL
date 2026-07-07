@@ -6,6 +6,17 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.0.0] — 2026-07-07
+
+### Added
+- `build_card.py` — deterministically generates `CARD.md` from `manifest.yaml`; same manifest always produces the same `CARD.md`, never hand-edited
+- `SKILL.md` Step 4 — "Generate CARD.md", run before testing and packaging
+- `scaffold.py` now seeds a placeholder `CARD.md` (overwritten by `build_card.py` before packaging)
+
+### Changed
+- **BREAKING:** `CARD.md` is now a third REQUIRED package file, alongside `manifest.yaml` and `SKILL.md` — packages built before this version lack it and no longer conform to the spec
+- `pack.py`'s documented usage no longer includes `--dashboard-dir` — each repo's own `dist/` folder is the only source of truth for a finished `.aiskill`; the legacy dashboard drop-zone copy is retired
+
 ## [1.0.0] — 2026-07-03
 
 ### Added

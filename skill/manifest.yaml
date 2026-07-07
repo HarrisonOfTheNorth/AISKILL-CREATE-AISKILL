@@ -1,7 +1,7 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 1.0.0
+version: 2.0.0
 description: Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
 author: Anthony Harrison
 authorEmail: widgets@penrithbeacon.com
@@ -21,6 +21,13 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.0.0
+    changes:
+      - "BREAKING: CARD.md promoted to a third REQUIRED package file, alongside manifest.yaml and SKILL.md — packages built before this version lack it and no longer conform"
+      - build_card.py — deterministically generates CARD.md from manifest.yaml; the same manifest always produces the same CARD.md, never hand-edited
+      - scaffold.py now seeds a CARD.md placeholder (overwritten by build_card.py before packaging)
+      - SKILL.md gains a new Step 4 (Generate CARD.md), renumbering the remaining steps
+      - Removed the legacy --dashboard-dir drop-zone copy from pack.py's documented usage — each repo's own dist/ folder is now the only source of truth for a finished .aiskill
   - version: 1.0.0
     changes:
       - Initial release — the meta-skill for creating .aiskill packages

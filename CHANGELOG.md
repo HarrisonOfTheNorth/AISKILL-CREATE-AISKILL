@@ -6,6 +6,16 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.0.0] — 2026-07-07
+
+### Added
+- `build_card.py` — deterministic `CARD.md` generator, sourced from `manifest.yaml` alone
+- New `SKILL.md` Step 4 ("Generate CARD.md"), remaining steps renumbered
+
+### Changed
+- **BREAKING:** `CARD.md` promoted to a third REQUIRED package file (`manifest.yaml`, `SKILL.md`, `CARD.md`)
+- Retired the `--dashboard-dir` legacy drop-zone copy from `pack.py`'s documented usage
+
 ## [1.0.0] — 2026-07-03
 
 ### Added

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-pack.py — CREATE-AISKILL v1.0.0
+pack.py — CREATE-AISKILL v2.0.0
 Generates checksums.yaml and packages the skill/ directory into a .aiskill archive.
 """
 
