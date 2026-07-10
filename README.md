@@ -1,6 +1,6 @@
 # CREATE-AISKILL.aiskill
 
-This is the skill that creates skills. Every AI Skill Package that exists — or will exist — can trace its origin to this one. Each one lives as a single file with a `.aiskill` extension — a ZIP archive at its core, small enough to share in a message, complete enough to stand alone. Before diving into what it does, it's worth taking a moment to understand the world it belongs to, because that context is what makes this particular package so significant.
+This is the skill that creates skills. Each one lives as a single file with a `.aiskill` extension — a ZIP archive at its core, small enough to share in a message, complete enough to stand alone. Before diving into what it does, it's worth taking a moment to understand the world it belongs to, because that context is what makes this particular package so significant.
 
 ---
 
@@ -14,7 +14,7 @@ Where a simple AI skill is just text — a prompt saved to a file and pasted in 
 
 The key insight is this: **the AI becomes the executor, not the author.**
 
-When an agent receives an AI Skill Package, the thinking has already been done. The procedure has already been written, tested, and verified by whoever built the package. The agent's job is simply to open it, read the entry point, follow the steps, and ask the user for anything it still needs. The output is deterministic — the same inputs produce the same result, every time, regardless of which agent runs it or when.
+When an agent receives an AI Skill Package, the thinking has already been done. The procedure has already been written, tested, and verified by whoever built the package. The agent's job is simply to open it, read the entry point, follow the steps, and ask the user for anything it still needs. The output is reliable in a specific sense: the procedure is fixed and has already been tested, not regenerated from scratch each time. For a skill whose work is a computation — a script that computes a result — the same inputs produce the same result every time, on any agent. For a skill whose work is inherently generative (writing prose, designing something original), the procedure is still fixed and tested, even though the creative output naturally varies — the same way a photographer's process is repeatable even though no two photos are identical.
 
 This is what separates an AI Skill Package from a prompt: reliability, repeatability, and trust.
 
@@ -54,11 +54,11 @@ If you have an idea for something an AI agent should be able to do repeatedly an
 
 > ### AI Independence Day — 4 July 2026
 >
-> CREATE-AISKILL was first published on 4 July 2026, the date we mark as **AI Independence Day** — the day a normative open standard first formalised, for the history of AI, the separation of computation from generation.
+> CREATE-AISKILL was first published on 4 July 2026, the date we mark as **AI Independence Day**.
 >
-> Until this point, when you asked an AI agent to perform a complex task, it authored the solution in the moment: reasoning its way through, generating steps it had never verified, producing output that could differ each time. An AI Skill Package changes that contract entirely. The procedure has been written in advance. It has been tested. It has been packaged and signed. When the agent runs it, it is not authoring anything — it is executing work that already exists, against inputs you provide, toward an outcome that has already been verified to be achievable.
+> Packaging a procedure so an agent executes it rather than generates it isn't new on its own — function calling and the Model Context Protocol already let an agent invoke deterministic tools instead of reasoning its way through the computation each time. What AI Independence Day marks is narrower and, we think, more consequential: the moment an agent stopped being the sole judge of whether what it's about to run can be trusted.
 >
-> The computation is independent of the generation. The agent is the executor, not the author.
+> Every AI Skill Package carries `SYSTEM.md`, an invariant protocol the agent must follow before it executes anything else inside the package. It requires the agent to check the package against an independent registry — not the package's own bundled claims about itself — and to stop, unconditionally, if that check fails or can't be completed, even when running unattended. The agent no longer decides for itself whether to trust a skill. It follows a governance process it did not write and cannot skip.
 >
 > CREATE-AISKILL is the package that made every other package possible. It is the origin of that independence. Released on the 4th of July, not by coincidence.
 
