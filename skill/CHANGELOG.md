@@ -6,6 +6,29 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.3.1] — 2026-07-10
+
+### Fixed
+- `convert.py`'s `str | None` annotations were unguarded and would raise a
+  `TypeError` on Python 3.8/3.9 — added `from __future__ import
+  annotations`. Caught while fact-checking the README's own "Python 3.8+"
+  claim
+- README's claim that `gh` CLI is "only needed to publish a GitHub
+  release" was incomplete — it's also used to create the repository
+  itself, and both steps have a manual web-UI alternative
+
+### Changed
+- Rewrote the README's Prerequisites, Under the Bonnet, This Skill in
+  Particular, On Public Distribution, and Specification sections to
+  properly cover the conversion capability — previously only Quick Start
+  and the Independence Day callout had been updated
+- Dropped the Python version prerequisite entirely — the spec requires
+  only "scripts", not Python specifically, and the AI agent handles
+  runtime needs invisibly
+- Named and linked the Cup and Ring Registry explicitly in Prerequisites,
+  and explained why publishing requires a real GitHub account
+  (accountability, not a technical format requirement)
+
 ## [2.3.0] — 2026-07-10
 
 ### Added

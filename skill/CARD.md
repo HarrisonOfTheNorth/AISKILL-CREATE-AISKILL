@@ -2,7 +2,7 @@
 
 Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 
-**Version:** 2.3.0
+**Version:** 2.3.1
 **Author:** Anthony Harrison
 **License:** MIT
 **Package ID:** `com.openaiskillpackage.create-aiskill`

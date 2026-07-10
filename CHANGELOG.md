@@ -6,6 +6,17 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.3.1] — 2026-07-10
+
+### Fixed
+- `convert.py` Python 3.8/3.9 compatibility bug (unguarded `str | None`
+  annotations)
+- README's `gh` CLI prerequisite claim, incomplete as previously worded
+
+### Changed
+- Comprehensive README revision covering the conversion capability across
+  every section, not just Quick Start
+
 ## [2.3.0] — 2026-07-10
 
 ### Added

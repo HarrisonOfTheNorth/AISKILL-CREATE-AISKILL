@@ -1,7 +1,7 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.3.0
+version: 2.3.1
 description: Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 author: Anthony Harrison
 authorEmail: widgets@penrithbeacon.com
@@ -26,6 +26,13 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.3.1
+    changes:
+      - "Fixed convert.py: str | None annotations were unguarded and would raise a TypeError on Python 3.8/3.9 -- added from __future__ import annotations. Caught while fact-checking the README's own Python version claim"
+      - "Rewrote the README's Prerequisites, Under the Bonnet, This Skill in Particular, On Public Distribution, and Specification sections to properly cover the conversion capability -- previously only Quick Start and the Independence Day callout had been updated"
+      - "Corrected the README's claim that gh CLI is 'only needed to publish a GitHub release' -- it's also used to create the repository itself, and both have a manual web-UI alternative"
+      - "Dropped the Python version prerequisite entirely -- the spec requires only 'scripts', not Python specifically, and the AI agent handles runtime needs invisibly"
+      - "Named and linked the Cup and Ring Registry explicitly, and explained why publishing requires a real GitHub account (accountability, not a technical format requirement)"
   - version: 2.3.0
     changes:
       - "New Track B: converting an existing skill from a foreign Agent Skills repo into one or more .aiskill packages — SKILL.md gains a Step 0 gateway (original vs. converted), and a new convert.py script (discover single/cherry-picked/batch skills, resolve per-skill license, classify a provisional tier, map directories, rewrite bare path references to assets/-prefixed form, generate the package)"
