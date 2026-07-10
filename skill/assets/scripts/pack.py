@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-pack.py — CREATE-AISKILL v2.0.0
-Generates checksums.yaml and packages the skill/ directory into a .aiskill archive.
+pack.py — CREATE-AISKILL v2.2.0
+Verifies SYSTEM.md conformance, generates checksums.yaml, and packages the
+skill/ directory into a .aiskill archive.
 """
 
 import argparse
@@ -23,6 +24,40 @@ except ImportError:
 def slug_from_id(skill_id: str) -> str:
     """'com.openaiskillpackage.create-aiskill' → 'CREATE-AISKILL'"""
     return skill_id.split(".")[-1].upper()
+
+
+# ── SYSTEM.md conformance ────────────────────────────────────────────────────
+# SYSTEM.md must be byte-identical across every .aiskill package in existence
+# (see the .aiskill spec v2.2.0) -- unlike CARD.md, which legitimately varies
+# per package and just gets regenerated, any difference here means either
+# drift or tampering. Refuse to package rather than silently zip up a wrong
+# or edited copy.
+
+def verify_system_md_matches_canonical(skill_dir: Path) -> None:
+    # The canonical source lives alongside the other template files, in this
+    # meta-skill's own assets/templates/SYSTEM.md -- Path(__file__) is
+    # .../AISKILL-CREATE-AISKILL/skill/assets/scripts/pack.py, so one parent up
+    # is .../skill/assets/.
+    canonical_path = Path(__file__).parent.parent / "templates" / "SYSTEM.md"
+    system_md_path = skill_dir / "SYSTEM.md"
+
+    if not system_md_path.exists():
+        print(f"Error: {system_md_path} not found. Every .aiskill package must include SYSTEM.md.", file=sys.stderr)
+        sys.exit(1)
+    if not canonical_path.exists():
+        print(f"Error: canonical SYSTEM.md not found at {canonical_path} -- cannot verify.", file=sys.stderr)
+        sys.exit(1)
+
+    actual = system_md_path.read_text(encoding="utf-8")
+    canonical = canonical_path.read_text(encoding="utf-8")
+    if actual != canonical:
+        print(
+            f"Error: {system_md_path} does not match the canonical SYSTEM.md "
+            f"({canonical_path}). SYSTEM.md is never hand-edited -- copy the "
+            f"canonical file verbatim, do not modify it.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
 
 # ── Checksum generation ──────────────────────────────────────────────────────
@@ -118,6 +153,10 @@ def main():
 
     print(f"\nPacking {slug}-{version}.aiskill")
     print(f"  skill dir: {skill_dir}")
+
+    # ── SYSTEM.md conformance ──
+    verify_system_md_matches_canonical(skill_dir)
+    print("  SYSTEM.md matches canonical text")
 
     # ── Checksums ──
     print("  computing checksums...")

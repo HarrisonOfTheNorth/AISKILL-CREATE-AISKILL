@@ -2,7 +2,7 @@
 
 Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
 
-**Version:** 2.1.0
+**Version:** 2.2.0
 **Author:** Anthony Harrison
 **License:** MIT
 **Package ID:** `com.openaiskillpackage.create-aiskill`

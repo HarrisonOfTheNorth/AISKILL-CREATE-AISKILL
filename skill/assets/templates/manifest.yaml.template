@@ -6,6 +6,7 @@ description: <<<DESCRIPTION>>>
 author: <<<AUTHOR>>>
 authorEmail: <<<AUTHOR_EMAIL>>>
 entry: SKILL.md
+system_protocol_version: "<<<SYSTEM_PROTOCOL_VERSION>>>"
 license: <<<LICENSE>>>
 minimum_runtime: "<<<MINIMUM_RUNTIME>>>"
 capabilities:

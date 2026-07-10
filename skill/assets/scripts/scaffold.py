@@ -19,6 +19,7 @@ REPO_PREFIX = "AISKILL"
 HOMEPAGE = "https://openaiskillpackage.com/"
 MINIMUM_RUNTIME = "1.0.0"
 DEFAULT_VERSION = "1.0.0"
+SYSTEM_PROTOCOL_VERSION = "1.0.0"  # must match SYSTEM.md's own "Protocol Version" header
 DEFAULT_LICENSE = "UNLICENSED"
 DEFAULT_CAPABILITIES = "filesystem.read,filesystem.write,process.exec"
 
@@ -170,6 +171,7 @@ def main():
         "TYPE": args.type,
         "LICENSE": args.license,
         "MINIMUM_RUNTIME": MINIMUM_RUNTIME,
+        "SYSTEM_PROTOCOL_VERSION": SYSTEM_PROTOCOL_VERSION,
         "CAPABILITIES_LIST": capabilities_to_yaml_list(args.capabilities),
         "TAGS": tags_to_yaml_inline(skill_tags),
         "HOMEPAGE": HOMEPAGE,
@@ -220,6 +222,17 @@ def main():
         repo_root / "skill" / "CARD.md",
         f"# {args.name}\n\n_Placeholder — run build_card.py before packaging. Do not hand-edit._\n"
     )
+
+    # SYSTEM.md is copied verbatim, never templated -- it's spec-mandated to be
+    # byte-identical across every .aiskill package in existence (see the
+    # .aiskill spec v2.2.0). The canonical source lives alongside the other
+    # template files (assets/templates/SYSTEM.md) -- this repo's own top-level
+    # skill/SYSTEM.md is itself just a verbatim copy of that same source
+    # (required since this meta-skill is itself a .aiskill package), kept in
+    # sync manually, the same as every other package's copy. pack.py enforces
+    # the byte-match against the templates/ source at packaging time.
+    canonical_system_md = templates_dir / "SYSTEM.md"
+    write_file(repo_root / "skill" / "SYSTEM.md", canonical_system_md.read_text(encoding="utf-8"))
 
     # ── Git init and remote ──
     print("\nInitialising git repository...")

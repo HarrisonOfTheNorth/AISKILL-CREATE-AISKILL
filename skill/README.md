@@ -68,6 +68,8 @@ Running `scaffold.py` produces:
 ├── skill/
 │   ├── manifest.yaml          ← identity and metadata
 │   ├── SKILL.md               ← AI entry point (fill this in)
+│   ├── SYSTEM.md              ← copied verbatim from assets/templates/SYSTEM.md — never edit
+│   ├── CARD.md                ← placeholder; overwritten by build_card.py
 │   ├── README.md
 │   ├── CHANGELOG.md
 │   ├── checksums.yaml         ← placeholder; overwritten by pack.py

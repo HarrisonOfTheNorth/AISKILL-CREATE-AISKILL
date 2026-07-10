@@ -1,11 +1,12 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.1.0
+version: 2.2.0
 description: Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
 author: Anthony Harrison
 authorEmail: widgets@penrithbeacon.com
 entry: SKILL.md
+system_protocol_version: "1.0.0"
 license: MIT
 minimum_runtime: "1.0.0"
 capabilities:
@@ -21,6 +22,13 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.2.0
+    changes:
+      - "BREAKING: SYSTEM.md promoted to a fourth REQUIRED package file (.aiskill spec v2.2.0) — an invariant, versioned verification protocol, identical across every compliant package, that an AI agent must follow before executing SKILL.md. Packages built before this version lack it and no longer conform"
+      - "New required manifest field: system_protocol_version, declaring which SYSTEM.md version the package ships — must match SYSTEM.md's own Protocol Version header"
+      - scaffold.py now copies SYSTEM.md verbatim from assets/templates/SYSTEM.md into every new package (this repo's own skill/SYSTEM.md is a synced copy of that same source, since this meta-skill is itself a .aiskill package)
+      - "pack.py refuses to package if skill/SYSTEM.md doesn't byte-match the canonical template exactly — stricter than CARD.md's regenerate-before-packaging rule, since SYSTEM.md should never legitimately vary at all"
+      - SKILL.md documents the new step and manifest field; Pre-Release Checklist gains matching checks
   - version: 2.1.0
     changes:
       - "SKILL.md new Step 1 — Choose a license: mandatory gated conversation before scaffolding, offers common open-source options (MIT first) if the user is unsure, falls back to license: UNLICENSED rather than silently defaulting if undecided"

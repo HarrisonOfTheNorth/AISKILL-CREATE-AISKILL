@@ -6,6 +6,23 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.2.0] — 2026-07-10
+
+### Added
+- `SYSTEM.md` promoted to a fourth REQUIRED package file (`.aiskill` spec
+  v2.2.0) — an invariant, versioned verification protocol, identical across
+  every compliant package, that an AI agent must follow before executing
+  `SKILL.md`. **BREAKING:** packages built before this version lack it and
+  no longer conform
+- New required manifest field `system_protocol_version`, declaring which
+  `SYSTEM.md` version the package ships — must match `SYSTEM.md`'s own
+  Protocol Version header
+- `scaffold.py` copies `SYSTEM.md` verbatim from `assets/templates/SYSTEM.md`
+  into every new package (this repo's own `skill/SYSTEM.md` is a synced copy
+  of that same source, since this meta-skill is itself a `.aiskill` package)
+- `pack.py` refuses to package if `skill/SYSTEM.md` doesn't byte-match the
+  canonical template exactly
+
 ## [2.1.0] — 2026-07-10
 
 ### Added
