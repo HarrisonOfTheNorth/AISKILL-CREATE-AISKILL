@@ -1,8 +1,8 @@
 # Create AI Skill Package
 
-Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
+Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 
-**Version:** 2.2.0
+**Version:** 2.3.0
 **Author:** Anthony Harrison
 **License:** MIT
 **Package ID:** `com.openaiskillpackage.create-aiskill`
@@ -16,10 +16,12 @@ Scaffolds a new .aiskill package with full repo structure, git init, GitHub remo
 - `filesystem.read`
 - `filesystem.write`
 - `process.exec`
+- `network.fetch`
 
 ## Permissions
 
 - **`filesystem.write`** — paths: `<aiskills_root>/AISKILL-*`
+- **`network.fetch`** — hosts: `github.com`
 
 ---
 

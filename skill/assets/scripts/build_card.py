@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-build_card.py — CREATE-AISKILL v2.0.0
+build_card.py — CREATE-AISKILL v2.3.0
 Deterministically generates CARD.md from manifest.yaml.
 Same inputs always produce the same output — CARD.md is never hand-edited.
 """

@@ -40,7 +40,11 @@ No commands. No configuration files. No prior knowledge required.
 
 CREATE-AISKILL is the origin point. It is the one AI Skill Package that was not itself created by an AI Skill Package — and from which every other AI Skill Package can be made.
 
-When you run CREATE-AISKILL, the agent asks you about the skill you want to build: what it should do, who it's for, what kind of output it produces. You answer in plain language. The agent does the rest — creating the complete package structure, setting up version control, and leaving you with everything in place to start describing your skill's procedure.
+When you run CREATE-AISKILL, it first asks whether you're building something new or bringing in a skill that already exists elsewhere.
+
+If you're building something new, the agent asks about the skill you want to build: what it should do, who it's for, what kind of output it produces. You answer in plain language. The agent does the rest — creating the complete package structure, setting up version control, and leaving you with everything in place to start describing your skill's procedure.
+
+If you're converting an existing skill — from a foreign Agent Skills repo, for example — the agent asks which repo and which skill (or skills), resolves each skill's own license before touching anything, and never carries forward a proprietary or ambiguous license without asking you directly first.
 
 The result is your own AI Skill Package: structured, versioned, and ready to run. Something you can keep for personal use, share with a team, or publish publicly so that others can download, inspect, and trust it.
 

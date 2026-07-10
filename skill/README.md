@@ -1,8 +1,12 @@
 # Create AI Skill Package
 
-Scaffolds a new `.aiskill` package with a complete repository structure, git init, GitHub remote, all required template files, and the `pack.py` packaging script.
+Scaffolds a new, originally-authored `.aiskill` package (Track A) with a complete
+repository structure, git init, GitHub remote, all required template files, and the
+`pack.py` packaging script. Also converts an existing skill from a foreign Agent
+Skills repo into one or more `.aiskill` packages, with a per-skill license gate
+(Track B) — see `SKILL.md` Step 0 for the full two-track workflow.
 
-**Version:** 1.0.0
+**Version:** 2.3.0
 **License:** MIT
 **Author:** Anthony Harrison
 **Homepage:** https://openaiskillpackage.com/

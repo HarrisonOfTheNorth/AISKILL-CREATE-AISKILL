@@ -6,6 +6,45 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.3.0] — 2026-07-10
+
+### Added
+- **Track B: convert an existing skill from a foreign Agent Skills repo.**
+  `SKILL.md` gains a Step 0 gateway (original vs. converted); new
+  `convert.py` discovers a single skill, a cherry-picked list, or a full
+  batch (every `SKILL.md` in the repo), resolves each skill's own license
+  (never assumed from the repo as a whole), classifies a provisional tier,
+  maps source directories to `.aiskill` conventions, rewrites bare path
+  references to their `assets/`-prefixed form automatically, and generates
+  the package
+- Three-tier license gate, always per-skill: tier 1 (permissive) converts
+  immediately; tier 2 (absent/ambiguous) and tier 3 (explicit
+  proprietary/all-rights-reserved) require a human attestation, logged in
+  both `manifest.yaml` (`license_attestation`) and `README.md` (`## License
+  Attestation`) — tier 3 requires a fresh attestation every time, never a
+  standing authorization
+- Batch/cherry-pick runs convert every tier-1 skill immediately and defer
+  every tier-2/3 skill to one list, resolved afterward via `convert.py
+  --attestation-for`
+- New manifest fields `origin`, `source_owner`, `source_repo`,
+  `source_path`, `converted_at`, `license_attestation`; new
+  `manifest.yaml.converted.template`, `README.*.converted.template`,
+  `CHANGELOG.md.converted.template`
+- New converted-package repo-naming pattern, `AISKILL-{origin}-{SLUG}` with
+  the origin segment always lowercased (`.aiskill` spec v2.2.1) — computed
+  correctly from the start instead of fixed after shipping
+- `test_convert.py` (15 tests) using real license-text fixtures from the
+  first conversion batch, including the actual `anthropics/skills`
+  proprietary notice that motivated the tier-3 gate
+
+### Fixed
+- `scaffold.py`/`build_card.py` docstring headers were still stamped
+  `v2.0.0`, never bumped alongside their actual v2.1.0/v2.2.0 behavior
+  changes
+- `inputs/schema.json`'s `license` field still defaulted to `MIT`,
+  inconsistent with `scaffold.py`'s real `UNLICENSED` default since the
+  v2.1.0 license-gate work
+
 ## [2.2.0] — 2026-07-10
 
 ### Added

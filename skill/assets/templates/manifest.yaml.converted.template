@@ -1,0 +1,26 @@
+name: <<<NAME>>>
+id: <<<ID>>>
+uuid: <<<UUID>>>
+version: <<<VERSION>>>
+description: <<<DESCRIPTION>>>
+author: <<<AUTHOR>>>
+authorEmail: <<<AUTHOR_EMAIL>>>
+entry: SKILL.md
+system_protocol_version: "<<<SYSTEM_PROTOCOL_VERSION>>>"
+license: <<<LICENSE>>>
+minimum_runtime: "<<<MINIMUM_RUNTIME>>>"
+capabilities:
+<<<CAPABILITIES_LIST>>>
+homepage: <<<HOMEPAGE>>>
+repository: <<<REPOSITORY>>>
+tags: <<<TAGS>>>
+type: <<<TYPE>>>
+origin: converted
+source_owner: <<<SOURCE_OWNER>>>
+source_repo: <<<SOURCE_REPO>>>
+source_path: <<<SOURCE_PATH>>>
+converted_at: "<<<CONVERTED_AT>>>"
+<<<LICENSE_ATTESTATION_BLOCK>>>changelog:
+  - version: <<<VERSION>>>
+    changes:
+      - Initial conversion from <<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>> (Agent Skills format) to .aiskill <<<AISKILL_SPEC_VERSION>>>

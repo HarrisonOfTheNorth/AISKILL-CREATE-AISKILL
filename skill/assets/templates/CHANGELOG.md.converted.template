@@ -1,0 +1,14 @@
+# Changelog — <<<NAME>>>
+
+All notable changes to this skill are documented here.
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+Versions follow [Semantic Versioning](https://semver.org/).
+
+---
+
+## [<<<VERSION>>>] — <<<DATE>>>
+
+### Added
+- Initial conversion from [<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>](https://github.com/<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>) (`<<<SOURCE_PATH>>>`, Agent Skills format) to `.aiskill` <<<AISKILL_SPEC_VERSION>>>
+- Original <<<LICENSE>>> license preserved verbatim in `LICENSE.txt`
+- `SYSTEM.md` verification protocol v<<<SYSTEM_PROTOCOL_VERSION>>> bundled per spec

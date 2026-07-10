@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-scaffold.py — CREATE-AISKILL v2.0.0
-Creates a complete AISKILL-{SLUG} repository structure for a new .aiskill package.
+scaffold.py — CREATE-AISKILL v2.3.0
+Creates a complete AISKILL-{SLUG} repository structure for a new, originally-authored
+.aiskill package (Track A). For converting an existing skill from another format, see
+convert.py (Track B) instead.
 """
 
 import argparse

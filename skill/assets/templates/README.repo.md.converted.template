@@ -1,0 +1,123 @@
+# <<<REPO_NAME>>>
+
+**<<<NAME>>>** — <<<DESCRIPTION>>>
+
+| | |
+|---|---|
+| Version | `<<<VERSION>>>` |
+| License | `<<<LICENSE>>>` |
+| Author | <<<AUTHOR>>> |
+| Homepage | https://openaiskillpackage.com/ |
+| Spec | [Open AI Skill Package Specification](https://openaiskillpackage.com/) |
+
+---
+
+## What This Skill Does
+
+<<<DESCRIPTION>>> Upgraded from a skill originally authored by [@<<<SOURCE_OWNER>>>](https://github.com/<<<SOURCE_OWNER>>>) on GitHub — see **Origin** below for the full provenance trail.
+
+---
+
+## Prerequisites
+
+Before using this skill, ensure the following are available in the AI agent's environment:
+
+- Python 3.8 or later
+- [Add any pip packages, e.g. `pip install pyyaml weasyprint`]
+- [Add any system tools, e.g. `git`, `gh` CLI]
+
+---
+
+## Quick Start
+
+1. Download `<<<SLUG>>>-<<<VERSION>>>.aiskill` from the [Releases](https://github.com/<<<GITHUB_ORG>>>/<<<REPO_NAME>>>/releases) page
+2. Give your AI agent the following prompt:
+
+```
+Using the Skill Package at /path/to/<<<SLUG>>>-<<<VERSION>>>.aiskill,
+[describe what you want the skill to do]
+```
+
+---
+
+## Skill Archive Contents
+
+```
+<<<SLUG>>>-<<<VERSION>>>.aiskill  (ZIP archive)
+├── manifest.yaml          # identity & metadata
+├── SYSTEM.md               # verification protocol (invariant)
+├── SKILL.md               # AI entry point — execution instructions
+├── README.md              # this file (skill-level)
+├── CHANGELOG.md           # version history
+├── LICENSE.txt            # original author's license, preserved
+├── checksums.yaml         # SHA-256 integrity hashes
+└── assets/
+<<<ASSET_TREE>>>
+```
+
+---
+
+## Origin
+
+This package is a **converted** skill — not originally authored for the `.aiskill` format. Converted per the `.aiskill` <<<AISKILL_SPEC_VERSION>>> spec's [provenance rules](https://openaiskillpackage.com/#provenance):
+
+- **Original repository:** [<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>](https://github.com/<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>)
+- **Original skill path:** `<<<SOURCE_PATH>>>`
+- **Converted:** <<<CONVERTED_AT>>>
+- **Original license:** <<<LICENSE>>> (preserved unchanged, not re-licensed)
+
+The `.aiskill`-specific files (`manifest.yaml`, `SYSTEM.md`, this README's packaging sections, `checksums.yaml`) were added during conversion. The skill's actual instructions (`SKILL.md`) and reference material are the original author's content, unmodified beyond format conversion (YAML frontmatter → `manifest.yaml`, directory renames per `manifest.yaml`'s `source_*` fields, and `assets/`-prefixed path references).
+<<<LICENSE_ATTESTATION_SECTION>>>
+---
+
+## Development Workflow
+
+To modify and repackage this skill:
+
+```bash
+# 1. Clone the source
+git clone https://github.com/<<<GITHUB_ORG>>>/<<<REPO_NAME>>>.git
+cd <<<REPO_NAME>>>
+
+# 2. Edit skill files in skill/
+#    - skill/SKILL.md       — execution instructions
+#    - skill/assets/        — scripts, references, templates
+
+# 3. Run tests, if any (must pass before packaging)
+python3 -m pytest skill/assets/tests/ -v
+
+# 4. Package
+python3 skill/assets/scripts/pack.py \
+  --skill-dir skill/ \
+  --dist-dir dist/
+
+# 5. Bump version in skill/manifest.yaml, update skill/CHANGELOG.md
+
+# 6. Commit, tag, and release
+git add -A
+git commit -m "feat: <<<SLUG>>> v[NEW-VERSION]"
+git push origin main
+git tag v[NEW-VERSION]
+git push origin v[NEW-VERSION]
+gh release create v[NEW-VERSION] dist/<<<SLUG>>>-[NEW-VERSION].aiskill \
+  --title "v[NEW-VERSION]" --notes "..."
+```
+
+---
+
+## Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for the full version history.
+
+---
+
+## License
+
+<<<LICENSE>>> — original license from [<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>](https://github.com/<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>), preserved unchanged. See [LICENSE](LICENSE).
+
+---
+
+## Contact
+
+**<<<AUTHOR>>>**
+For questions or issues with this conversion, open an issue on [GitHub](https://github.com/<<<GITHUB_ORG>>>/<<<REPO_NAME>>>). For questions about the original skill content, see the [original repository](https://github.com/<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>).

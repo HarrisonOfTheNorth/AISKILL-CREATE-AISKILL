@@ -6,6 +6,40 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.3.0] — 2026-07-10
+
+### Added
+- Track B: `convert.py` turns an existing skill from a foreign Agent Skills
+  repo into one or more `.aiskill` packages, with a per-skill three-tier
+  license gate (permissive / needs-attestation / needs-fresh-attestation-
+  every-time) and automatic `assets/`-prefixed path-reference rewriting
+- New converted-package repo-naming pattern (`AISKILL-{origin}-{SLUG}`,
+  origin always lowercased) computed correctly by the tool itself
+- `test_convert.py` (15 tests) with real license-text fixtures
+
+### Fixed
+- Stale `v2.0.0` docstring headers in `scaffold.py`/`build_card.py`
+- `inputs/schema.json`'s stale `MIT` license default (now `UNLICENSED`)
+
+## [2.2.0] — 2026-07-10
+
+### Added
+- `SYSTEM.md` — invariant, fourth REQUIRED package file, an external verification protocol every AI agent follows before executing `SKILL.md`
+- New required manifest field `system_protocol_version`
+- `scaffold.py` copies `SYSTEM.md` verbatim into every new package; `pack.py` refuses to package if it's been hand-edited
+
+### Changed
+- **BREAKING:** packages built before this version lack `SYSTEM.md` and no longer conform
+
+## [2.1.0] — 2026-07-10
+
+### Added
+- `SKILL.md` Step 1 — mandatory license-selection gate before scaffolding (falls back to `license: UNLICENSED`, never silently defaults to a permissive license)
+- Bundled `skill/LICENSE.txt`
+
+### Changed
+- `scaffold.py --license` default changed from `MIT` to `UNLICENSED`
+
 ## [2.0.0] — 2026-07-07
 
 ### Added

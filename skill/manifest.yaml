@@ -1,8 +1,8 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.2.0
-description: Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
+version: 2.3.0
+description: Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 author: Anthony Harrison
 authorEmail: widgets@penrithbeacon.com
 entry: SKILL.md
@@ -13,15 +13,28 @@ capabilities:
   - filesystem.read
   - filesystem.write
   - process.exec
+  - network.fetch
 permissions:
   filesystem.write:
     paths:
       - "<aiskills_root>/AISKILL-*"
+  network.fetch:
+    hosts:
+      - "github.com"
 homepage: https://openaiskillpackage.com/
 repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.3.0
+    changes:
+      - "New Track B: converting an existing skill from a foreign Agent Skills repo into one or more .aiskill packages — SKILL.md gains a Step 0 gateway (original vs. converted), and a new convert.py script (discover single/cherry-picked/batch skills, resolve per-skill license, classify a provisional tier, map directories, rewrite bare path references to assets/-prefixed form, generate the package)"
+      - "Three-tier license gate, always per-skill never per-repo: tier 1 (permissive) converts immediately; tier 2 (absent/ambiguous) and tier 3 (explicit proprietary/all-rights-reserved) require a human attestation, logged in both manifest.yaml (license_attestation) and README.md (## License Attestation) — tier 3 requires a fresh attestation every time, never a standing authorization"
+      - "Batch/cherry-pick runs process every tier-1 skill immediately and defer every tier-2/3 skill to a single list, resolved afterward via convert.py --attestation-for"
+      - "New manifest.yaml fields: origin, source_owner, source_repo, source_path, converted_at, license_attestation — new manifest.yaml.converted.template, README.*.converted.template, CHANGELOG.md.converted.template"
+      - "New converted-package repo-naming pattern, AISKILL-{origin}-{SLUG} with the origin segment always lowercased (.aiskill spec v2.2.1) — computed correctly by convert.py from the start, rather than fixed after the fact"
+      - "New test_convert.py (15 tests) using real license-text fixtures from the first conversion batch, including the actual anthropics/skills proprietary notice that motivated the tier-3 gate"
+      - "Fixed stale v2.0.0 docstring headers in scaffold.py/build_card.py; caught up the top-level CHANGELOG.md to match skill/CHANGELOG.md; fixed inputs/schema.json's stale MIT license default to UNLICENSED"
   - version: 2.2.0
     changes:
       - "BREAKING: SYSTEM.md promoted to a fourth REQUIRED package file (.aiskill spec v2.2.0) — an invariant, versioned verification protocol, identical across every compliant package, that an AI agent must follow before executing SKILL.md. Packages built before this version lack it and no longer conform"
