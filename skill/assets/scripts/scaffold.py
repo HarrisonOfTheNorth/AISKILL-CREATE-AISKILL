@@ -19,7 +19,7 @@ REPO_PREFIX = "AISKILL"
 HOMEPAGE = "https://openaiskillpackage.com/"
 MINIMUM_RUNTIME = "1.0.0"
 DEFAULT_VERSION = "1.0.0"
-DEFAULT_LICENSE = "MIT"
+DEFAULT_LICENSE = "UNLICENSED"
 DEFAULT_CAPABILITIES = "filesystem.read,filesystem.write,process.exec"
 
 
@@ -117,7 +117,8 @@ def parse_args():
     p.add_argument("--github-org", required=True,
                    help="GitHub organisation or user, e.g. YourGitHubOrg")
     p.add_argument("--license", default=DEFAULT_LICENSE,
-                   help=f"SPDX identifier or Proprietary (default: {DEFAULT_LICENSE})")
+                   help=f"SPDX identifier, Proprietary, or UNLICENSED (default: {DEFAULT_LICENSE}) — "
+                        "decide this via a conversation with the user, never guess it")
     p.add_argument("--capabilities", default=DEFAULT_CAPABILITIES,
                    help="Comma-separated capability tokens")
     p.add_argument("--slug",

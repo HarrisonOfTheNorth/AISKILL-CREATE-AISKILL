@@ -1,12 +1,13 @@
 algorithm: sha256
 files:
-  CARD.md: 89c4ed014aabbac788b4b0210105eaead46bb870314aebadd02bb0b62dab29d2
-  CHANGELOG.md: 2456f4616fd161dd5aee75f3082012f63d50ad90422a35f15126582612c54b95
-  README.md: 7935f9a910890226856a03f216d11e1a293bf3917c67d57f25fac55c030bdd95
-  SKILL.md: 18800aad73bff59d6bfd62f082c3836affeece7ef2a8d2b4334573f59fd07e9d
+  CARD.md: e2d94ed919c09f88a3113a55601927b553412a206b51f34f203b25dfc5e08426
+  CHANGELOG.md: 713c9abb73575da54dd373651de4ba8515043c1dffc726030f5275b83c8b1408
+  LICENSE.txt: f09f8eeb593e567b28ec7f0c23079fda2f627f14d05a3651f531a64c006d7086
+  README.md: 7245ffc18fdd28bf03b31f3b9bd8d2242d0ca2babd688c10af4ea394c682cc79
+  SKILL.md: e8bdce143f24d830fa1dcce1f54f13d8ab00cd37352cfaad1ed64baa0e088563
   assets/scripts/build_card.py: 8824ad1f36c9938d78fa966ff737ae9a7d6841e7dbff3830bdd1bbb25e4431d7
   assets/scripts/pack.py: 1c4fec962cc0f4650ffeb850c3770f486867c49c5977a92cd56af6e3ee7b239c
-  assets/scripts/scaffold.py: 8599e13e28c5d3d9b0d3a3928a05d158adc60b0fb8b226395a2e8ce01222adce
+  assets/scripts/scaffold.py: 6bacce17c258eaad99c9a6142f2153adebbfd103a9d96b3e4a7a2481dbe74b8c
   assets/templates/CHANGELOG.md.template: 0bbde63fa7a5918776289660292677054a69319abaf6d743cc9fda4ef75b186a
   assets/templates/README.repo.md.template: 2c927f82ea541f6b59891c209be984d87e44a6ff75bb98c72215208e46a4358d
   assets/templates/README.skill.md.template: 83f6a9210f27537108f7c4f65b7b75f40ae6ebe74223e560985cbcac5503956d
@@ -16,4 +17,4 @@ files:
   assets/templates/schema.json.template: 1bd6afcf36825d3e9b2e4dab0db078312e26932aa857ae7f2e2dea680e030e90
   assets/tests/test_scaffold.py: 138a4907c4b1002158706819da78e4944882b58825db22c937b560a857db2c55
   inputs/schema.json: 4cd9b87af58ae2a240d10bb27d781f10306d936769744da8b32228886c6ce760
-  manifest.yaml: 28d485f206fef8491734d5a68cf07e936a9c1623e825fa741fc661a4e9ded25c
+  manifest.yaml: 9e1cefdf4cfd49019fd12167f38cca8ae9b31764a58fc2a7628cc2fdc95d5f5a

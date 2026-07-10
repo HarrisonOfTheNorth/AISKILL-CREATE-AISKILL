@@ -1,7 +1,7 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.0.0
+version: 2.1.0
 description: Scaffolds a new .aiskill package with full repo structure, git init, GitHub remote, all required templates, and the pack.py packaging script.
 author: Anthony Harrison
 authorEmail: widgets@penrithbeacon.com
@@ -21,6 +21,12 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.1.0
+    changes:
+      - "SKILL.md new Step 1 — Choose a license: mandatory gated conversation before scaffolding, offers common open-source options (MIT first) if the user is unsure, falls back to license: UNLICENSED rather than silently defaulting if undecided"
+      - Bundled skill/LICENSE.txt (MIT) — conforms to the v2.1.0 .aiskill spec's optional bundled license file
+      - UNLICENSED documented as a recognized license manifest value
+      - "scaffold.py --license default changed from MIT to UNLICENSED"
   - version: 2.0.0
     changes:
       - "BREAKING: CARD.md promoted to a third REQUIRED package file, alongside manifest.yaml and SKILL.md — packages built before this version lack it and no longer conform"

@@ -50,7 +50,7 @@ See `inputs/schema.json` for the full JSON Schema definition.
 | `--type` | yes | `procedural`, `analytical`, or `generative` |
 | `--id-domain` | yes | Reverse-domain prefix for the manifest `id` |
 | `--github-org` | yes | GitHub org/user (used to build remote URL) |
-| `--license` | no | SPDX identifier or `Proprietary` (default: `MIT`) |
+| `--license` | no | SPDX identifier, `Proprietary`, or `UNLICENSED` (default: `UNLICENSED`) — see `SKILL.md` Step 1 for the required conversation before setting this |
 | `--capabilities` | no | Comma-separated capability tokens |
 | `--slug` | no | Override the auto-derived UPPER-KEBAB-CASE slug |
 
