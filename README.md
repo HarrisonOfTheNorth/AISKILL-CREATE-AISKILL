@@ -46,7 +46,7 @@ If you're building something new, the agent asks about the skill you want to bui
 
 If you're converting an existing skill — one built to the [Agent Skills specification](https://agentskills.io/specification), for example — the agent asks which repo and which skill (or skills), resolves each skill's own license before touching anything, and never carries forward a proprietary or ambiguous license without asking you directly first.
 
-The result is your own AI Skill Package: structured, versioned, and ready to run. Something you can keep for personal use, share with a team, or publish publicly so that others can download, inspect, and trust it.
+The result is your own AI Skill Package: structured, versioned, and ready to run. Something you can keep for personal use, share with a team, or publish publicly so that others can download, inspect, and trust it. Either way, the result is the same kind of package — checked, versioned, and ready to trust — whether it started as your own idea or as someone else's skill built for a different system.
 
 If you have an idea for something an AI agent should be able to do repeatedly and reliably — this is where that idea becomes a package.
 
@@ -66,11 +66,11 @@ If you have an idea for something an AI agent should be able to do repeatedly an
 
 ## Prerequisites
 
-If you are new to AI Skill Packages, you can ignore this section entirely. The AI agent will identify anything it needs and ask your permission before installing it. The list below is for developers who prefer to know what's on the engine before they turn the key.
+If you are new to AI Skill Packages, you can ignore this section entirely and skip straight to Quick Start below. Nothing here needs installing by hand — your AI agent works out what a particular skill actually needs and asks your permission before installing anything that isn't already there. This section exists for the curious.
 
-- Python 3.8+
-- git
-- gh CLI (optional — only needed to publish a GitHub release)
+- **git** — every AI Skill Package is also an ordinary source-controlled repository under the hood. Source control keeps a permanent, ordered history of every change ever made — who changed what, and when — so nothing is ever silently lost or overwritten, and any earlier version can always be recovered. It's the same tool almost all software in the world is built with. Your agent uses it automatically; you'll never need to type a git command yourself.
+- **The `gh` command-line tool** — *optional*. git can push code to a repository that already exists, but creating a new GitHub repository, or publishing a finished version as a GitHub Release, aren't git actions at all — they're GitHub-platform features. `gh` is how your agent does those two things without you needing to click through GitHub's website by hand. Decline it and do those two steps yourself in your browser instead — everything else works exactly the same either way.
+- **Your own GitHub account** — needed only if you want to publish your skill so others can find, register, and download it. This isn't a requirement of the `.aiskill` format itself — it's a requirement of the [Cup and Ring Registry](https://cupandringregistry.com), the registry this ecosystem uses to list and verify published skills. The registry deliberately ties every published skill to a real GitHub account: that's what makes whoever published a skill accountable for it, and what proves a real connection between a specific skill and a specific person, rather than an anonymous upload. If you don't have one, accounts are free at [github.com/signup](https://github.com/signup) — an email address and a username is all it takes.
 
 ---
 
@@ -125,7 +125,17 @@ When an agent receives an `.aiskill` file, it reverses that process: unpacks the
 
 If you're converting a skill built to the [Agent Skills specification](https://agentskills.io/specification) — the format used by tools like Claude Code's own skills, among others — into this [AI Skill Package specification](https://openaiskillpackage.com/), you get more than a straight conversion. The result still runs on the same AI agents, but gains capabilities the original format doesn't have: built-in unit tests, a verifiable record of exactly where it came from, and a security model — checksums, license tracking, and registry-based verification — built to catch tampering or license problems before anyone downstream runs the skill.
 
-There's one more thing CREATE-AISKILL does before producing anything, though: it checks the license the original skill was released under. A clearly open license (like MIT or Apache) needs no further input from you. Anything else — no license found, an unclear one, or one that restricts reuse — stops the process and asks you to confirm you're allowed to proceed, and permanently records that confirmation, with your name attached, inside the finished package.
+**Converting an existing skill works differently under the bonnet.** Instead of starting from an empty folder, CREATE-AISKILL fetches the skill you pointed it at and works through it:
+
+1. **Finds the license.** It looks for a license file in the skill's own folder first, then falls back to the one covering the whole repository, then treats "genuinely couldn't find one" as its own case rather than assuming the best.
+2. **Sorts skills into three groups** based on that license — clearly open, unclear, or restrictive. A clearly open license (like MIT or Apache) needs no further input from you. Anything else stops the process and asks you to confirm you're allowed to proceed, and permanently records that confirmation, with your name attached, inside the finished package.
+3. **Rebuilds the file layout to match the AI Skill Package structure**, and — this is the detail that's easy to get wrong by hand — rewrites every internal reference to a moved file, so a line like "see `references/pricing.md`" still points somewhere real once that file has been relocated into its new home.
+4. **Names the result consistently**, so a converted package is recognisable as both an AI Skill Package *and* a conversion, and so the account it came from and the repository it came from are never ambiguous.
+5. **Records where it came from**, permanently, inside the package: the original repository, the exact file path within it, the date of conversion, and — if your confirmation was needed — your name and what you approved.
+
+When you're converting a whole repository at once, the skills with a clearly open license are finished immediately; anything needing your confirmation is set aside and handled with you afterward, so a few unclear cases never hold up the rest.
+
+The parts that make an AI Skill Package trustworthy — the manifest, the checksums, the invariant `SYSTEM.md` verification protocol described above — are added the same way regardless of whether the package was built from scratch or converted. Only `capabilities` and `permissions` are always left for a human to fill in afterward: no format this tool has been checked against declares anything CREATE-AISKILL could read those off automatically, for a package built from scratch or converted from elsewhere.
 
 ---
 
@@ -135,11 +145,13 @@ For personal or internal use, a local-only skill works just as well — no GitHu
 
 If you intend to share your skill publicly, a public repository is strongly recommended — not for convenience, but for trust. When users can read the source, they can verify the package does what it says and nothing it shouldn't. The open `.aiskill` format exists precisely so that inspection is always possible.
 
+This matters even more for a converted skill: the Origin section and license confirmation CREATE-AISKILL adds aren't just internal bookkeeping — they're exactly what a stranger needs to see, before trusting a package that didn't originate with you, to know it's being redistributed properly.
+
 ---
 
 ## Specification
 
-The full Open AI Skill Package specification is at [openaiskillpackage.com](https://openaiskillpackage.com/).
+The full Open AI Skill Package specification is at [openaiskillpackage.com](https://openaiskillpackage.com/). If you're converting a skill, the format it's converting *from* — the Agent Skills specification — is at [agentskills.io/specification](https://agentskills.io/specification).
 
 ---
 

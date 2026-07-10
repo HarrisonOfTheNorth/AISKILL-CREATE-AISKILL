@@ -30,6 +30,8 @@ with the user before either of those, same discipline as every converted package
 shipped so far.
 """
 
+from __future__ import annotations  # keeps `str | None` annotations valid on Python 3.8/3.9
+
 import argparse
 import re
 import subprocess
