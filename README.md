@@ -44,7 +44,7 @@ When you run CREATE-AISKILL, it first asks whether you're building something new
 
 If you're building something new, the agent asks about the skill you want to build: what it should do, who it's for, what kind of output it produces. You answer in plain language. The agent does the rest — creating the complete package structure, setting up version control, and leaving you with everything in place to start describing your skill's procedure.
 
-If you're converting an existing skill — from a foreign Agent Skills repo, for example — the agent asks which repo and which skill (or skills), resolves each skill's own license before touching anything, and never carries forward a proprietary or ambiguous license without asking you directly first.
+If you're converting an existing skill — one built to the [Agent Skills specification](https://agentskills.io/specification), for example — the agent asks which repo and which skill (or skills), resolves each skill's own license before touching anything, and never carries forward a proprietary or ambiguous license without asking you directly first.
 
 The result is your own AI Skill Package: structured, versioned, and ready to run. Something you can keep for personal use, share with a team, or publish publicly so that others can download, inspect, and trust it.
 
@@ -78,7 +78,7 @@ If you are new to AI Skill Packages, you can ignore this section entirely. The A
 
 Give your AI agent this prompt — nothing more is needed to begin:
 
-> _Run the Skill Package at /path/to/CREATE-AISKILL-1.0.0.aiskill_
+> _Run the Skill Package at /path/to/CREATE-AISKILL-2.3.0.aiskill_
 
 That is the complete minimal prompt. The agent opens the package, reads its entry point, and starts a conversation with you to gather what it needs. It will typically ask:
 
@@ -92,9 +92,15 @@ You can answer in any order and in any amount of detail. If your opening prompt 
 
 **A fuller prompt — for illustration:**
 
-> _Run the Skill Package at /path/to/CREATE-AISKILL-1.0.0.aiskill — I want to create a skill that helps a home cook plan a week of dinners based on what's in season and any dietary restrictions in the household._
+> _Run the Skill Package at /path/to/CREATE-AISKILL-2.3.0.aiskill — I want to create a skill that helps a home cook plan a week of dinners based on what's in season and any dietary restrictions in the household._
 
 With a prompt like that, the agent already knows the name, the purpose, and the audience. It may only need to ask one or two follow-up questions before it gets to work.
+
+**Converting a skill from the Agent Skills format:**
+
+> _Run the Skill Package at /path/to/CREATE-AISKILL-2.3.0.aiskill — I found a skill built to the [Agent Skills specification](https://agentskills.io/specification) that I'd like turned into a proper [AI Skill Package](https://openaiskillpackage.com/)._
+
+The agent will ask which skill (or skills) you mean, check what license the original was released under, and only proceed on anything unclear or restricted once you've confirmed you're allowed to.
 
 ---
 
@@ -116,6 +122,10 @@ When CREATE-AISKILL finishes, it has produced a directory containing everything 
 Once all of those are in place, turning that folder into an AI Skill Package takes exactly two steps: zip it up, and rename the file extension from `.zip` to `.aiskill`. That is all the format is — a ZIP with a name that says what it contains.
 
 When an agent receives an `.aiskill` file, it reverses that process: unpacks the archive into a temporary working area, opens `SKILL.md`, and follows the instructions inside like a flowchart. Each branch either continues the task or returns to the user with a question. Eventually every branch leads to the same place — the completed output the skill was built to produce.
+
+If you're converting a skill built to the [Agent Skills specification](https://agentskills.io/specification) — the format used by tools like Claude Code's own skills, among others — into this [AI Skill Package specification](https://openaiskillpackage.com/), you get more than a straight conversion. The result still runs on the same AI agents, but gains capabilities the original format doesn't have: built-in unit tests, a verifiable record of exactly where it came from, and a security model — checksums, license tracking, and registry-based verification — built to catch tampering or license problems before anyone downstream runs the skill.
+
+There's one more thing CREATE-AISKILL does before producing anything, though: it checks the license the original skill was released under. A clearly open license (like MIT or Apache) needs no further input from you. Anything else — no license found, an unclear one, or one that restricts reuse — stops the process and asks you to confirm you're allowed to proceed, and permanently records that confirmation, with your name attached, inside the finished package.
 
 ---
 
