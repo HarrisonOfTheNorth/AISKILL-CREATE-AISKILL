@@ -58,10 +58,10 @@ same archive — a tampered package could tamper its own `checksums.yaml` to
 match. This file must be checked against an external, independent source:
 the Cup and Ring Registry (cupandringregistry.com).
 
-**Check first, before asking anything:** if an MCP tool resembling
-`verify_skill_package_tool` is already available from any server
-implementing the Cup and Ring Registry verification API, that verifier is
-already running and connected — use it directly, no need to ask anything.
+**Check first, before asking anything:** if an MCP tool resembling the Cup
+and Ring Registry Verifier (or the Verifier itself, available at
+cupandringregistry.com) is already available, that verifier is already
+running and connected — use it directly, no need to ask anything.
 
 **Otherwise, ask:** *"Do you have the Cup and Ring Registry Verifier — or
 any other application implementing the same verification API — installed

@@ -5,7 +5,7 @@ files:
   LICENSE.txt: f09f8eeb593e567b28ec7f0c23079fda2f627f14d05a3651f531a64c006d7086
   README.md: d027ad2841dc6a42c98f1006c289f899bf0b54cf6a5c125c55c194d6170f0f93
   SKILL.md: 4287f4f149b99db268c6aff47f587040aea3ab53adc8b89617c7c1b65075216c
-  SYSTEM.md: 9bd3ef97d6cfafd289896dc3677b2f5cb4222ea3d3b3b8ca4498d73384a3acbd
+  SYSTEM.md: f7d9c4a38c55571a670c4d06c33a3a1c85e5a4f1dbe5536e375d3b63101d6a61
   assets/scripts/build_card.py: 8824ad1f36c9938d78fa966ff737ae9a7d6841e7dbff3830bdd1bbb25e4431d7
   assets/scripts/pack.py: 23148555fbe6a8eb5c6b851dc89de73c05cef20be85f861fbaaf270153c1cadb
   assets/scripts/scaffold.py: 9f450f9bc14f0efed9cf21a57b896229ac77666e61952e08cb13f5e822049eda
@@ -13,7 +13,7 @@ files:
   assets/templates/README.repo.md.template: 2c927f82ea541f6b59891c209be984d87e44a6ff75bb98c72215208e46a4358d
   assets/templates/README.skill.md.template: 83f6a9210f27537108f7c4f65b7b75f40ae6ebe74223e560985cbcac5503956d
   assets/templates/SKILL.md.template: 8adb74f84ca82a50dc99bb69854efefa6b5880d860b6e97315e32b9660cd8892
-  assets/templates/SYSTEM.md: 9bd3ef97d6cfafd289896dc3677b2f5cb4222ea3d3b3b8ca4498d73384a3acbd
+  assets/templates/SYSTEM.md: f7d9c4a38c55571a670c4d06c33a3a1c85e5a4f1dbe5536e375d3b63101d6a61
   assets/templates/gitignore.template: 516e63c2ff5820dcfb628fa5cc4b63557dc3e294e446448e3bcbd35f473c1d6f
   assets/templates/manifest.yaml.template: efd5227344c0a0b472e17f837a038686e686c054d652585fac5e6a560b055592
   assets/templates/schema.json.template: 1bd6afcf36825d3e9b2e4dab0db078312e26932aa857ae7f2e2dea680e030e90
