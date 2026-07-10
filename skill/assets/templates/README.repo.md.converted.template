@@ -2,6 +2,8 @@
 
 **<<<NAME>>>** — <<<DESCRIPTION>>>
 
+<<<SYNOPSIS>>>
+
 | | |
 |---|---|
 | Version | `<<<VERSION>>>` |
@@ -47,7 +49,7 @@ Using the Skill Package at /path/to/<<<SLUG>>>-<<<VERSION>>>.aiskill,
 ├── manifest.yaml          # identity & metadata
 ├── SYSTEM.md               # verification protocol (invariant)
 ├── SKILL.md               # AI entry point — execution instructions
-├── README.md              # this file (skill-level)
+├── README.md              # this file — byte-identical to the repo-root copy
 ├── CHANGELOG.md           # version history
 ├── LICENSE.txt            # original author's license, preserved
 ├── checksums.yaml         # SHA-256 integrity hashes

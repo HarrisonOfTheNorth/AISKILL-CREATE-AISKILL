@@ -1,6 +1,6 @@
 # Create AI Skill Package
 
-**Skill:** `CREATE-AISKILL-2.3.0.aiskill`
+**Skill:** `CREATE-AISKILL-2.4.0.aiskill`
 **UUID:** `a1805527-85e9-4002-9ab3-770084e9b45c`
 **Type:** Procedural
 **Homepage:** https://openaiskillpackage.com/
@@ -58,6 +58,7 @@ The full JSON Schema is at `inputs/schema.json`.
 | `--aiskills-root` | yes | — | Absolute path to the folder that contains all AISKILL repos, e.g. `/Volumes/ai-skill-packages/aiskills` |
 | `--name` | yes | — | Human-readable skill name, e.g. `"WCAG Contrast Audit"` |
 | `--description` | yes | — | One-line purpose statement |
+| `--synopsis` | yes | — | Multi-paragraph expansion of `--description`, hand-authored (see Step 2) |
 | `--author` | yes | — | Author name or organisation |
 | `--author-email` | yes | — | Contact email address |
 | `--type` | yes | — | `procedural` \| `analytical` \| `generative` \| `instructional` |
@@ -73,7 +74,7 @@ The full JSON Schema is at `inputs/schema.json`.
 
 Before scaffolding anything, ask the person creating the package what license
 they want the new `.aiskill` package released under. This decision feeds the
-`--license` argument in Step 2 — never guess it, and never silently default
+`--license` argument in Step 3 — never guess it, and never silently default
 to a permissive license the person didn't actually choose.
 
 - **If they already know** (e.g. `MIT`, `Apache-2.0`, `GPL-3.0`, `Proprietary`),
@@ -102,13 +103,37 @@ to a permissive license the person didn't actually choose.
     Packages are not required to be open source — never silently substitute
     a real open-source license for a choice the person didn't make.
 
-### Step 2 — Run scaffold.py
+### Step 2 — Write a synopsis
+
+Before scaffolding, write the `synopsis` — a multi-paragraph expansion of the
+one-line description, required by the `.aiskill` spec (v2.3.0+) alongside
+`description`. It feeds both `manifest.yaml` (verbatim) and, via
+`build_card.py` in Step 6, `CARD.md` — the summary a runtime shows a human
+before they decide to use the package. **Author it directly. Never derive it
+by parsing a README** — this mirrors the existing rule that `capabilities`/
+`permissions` are always hand-authored, never auto-inferred.
+
+Recommended three-paragraph structure:
+1. **What it does** — the one-line description, expanded into real
+   mechanical detail.
+2. **When to reach for it** — the situations that make this skill relevant,
+   written as prose for a human reader.
+3. **Why to trust this package** — its verification status (unit tests,
+   `SYSTEM.md`'s external-registry check), and anything else that speaks to
+   reliability.
+
+### Step 3 — Run scaffold.py
 
 ```bash
 python3 assets/scripts/scaffold.py \
   --aiskills-root /Volumes/ai-skill-packages/aiskills \
   --name "My Skill Name" \
   --description "One-line purpose statement" \
+  --synopsis "Paragraph one...
+
+Paragraph two...
+
+Paragraph three..." \
   --author "Your Name" \
   --author-email "you@example.com" \
   --type procedural \
@@ -126,38 +151,42 @@ scaffold.py will:
 5. Copy `SYSTEM.md` into `skill/SYSTEM.md` **verbatim, with no substitution** —
    this file is spec-mandated to be byte-identical across every `.aiskill`
    package in existence (see the `.aiskill` spec). It is never
-   authored or edited per-skill; `pack.py` (Step 7) refuses to package a
+   authored or edited per-skill; `pack.py` (Step 8) refuses to package a
    copy that doesn't match exactly.
 6. Set `manifest.yaml`'s `system_protocol_version` to match `SYSTEM.md`'s own
    Protocol Version header
-7. Run `git init` and `git remote add origin https://github.com/{github-org}/AISKILL-MY-SKILL-NAME.git`
-8. Create the initial git commit
-9. Print a next-steps summary
+7. Render `README.repo.md.template` once and write the identical result to
+   both `README.md` (repo root) and `skill/README.md` — the two copies must
+   stay byte-identical; `pack.py` (Step 8) refuses to package if they diverge
+8. Run `git init` and `git remote add origin https://github.com/{github-org}/AISKILL-MY-SKILL-NAME.git`
+9. Create the initial git commit
+10. Print a next-steps summary
 
 The scaffolded tree will be:
 ```
 AISKILL-MY-SKILL-NAME/
-├── README.md              ← repo-level, elaborate
+├── README.md              ← repo-level — byte-identical to skill/README.md
 ├── CHANGELOG.md           ← repo-level
 ├── .gitignore
 ├── skill/                 ← zip this → MY-SKILL-NAME-1.0.0.aiskill
-│   ├── manifest.yaml      ← pre-filled, uuid generated, includes system_protocol_version
-│   ├── SKILL.md           ← skeleton — YOU MUST FILL THIS IN (Step 3)
-│   ├── SYSTEM.md          ← copied verbatim from the canonical source (Step 2) — never edit this
-│   ├── README.md          ← skill-level
+│   ├── manifest.yaml      ← pre-filled, uuid generated, includes system_protocol_version + synopsis
+│   ├── SKILL.md           ← skeleton — YOU MUST FILL THIS IN (Step 4)
+│   ├── SYSTEM.md          ← copied verbatim from the canonical source (Step 3) — never edit this
+│   ├── README.md          ← byte-identical to the repo-root copy above — the only one that
+│   │                         travels with the distributed .aiskill file (pack.py enforces this)
 │   ├── CHANGELOG.md
-│   ├── CARD.md            ← placeholder — regenerated by build_card.py (Step 5)
-│   ├── checksums.yaml     ← written by pack.py (Step 7)
+│   ├── CARD.md            ← placeholder — regenerated by build_card.py (Step 6)
+│   ├── checksums.yaml     ← written by pack.py (Step 8)
 │   ├── assets/
-│   │   ├── scripts/       ← YOUR SCRIPTS GO HERE (Step 4)
-│   │   ├── templates/     ← YOUR TEMPLATES GO HERE (Step 4)
-│   │   └── tests/         ← YOUR TESTS GO HERE (Step 4)
+│   │   ├── scripts/       ← YOUR SCRIPTS GO HERE (Step 5)
+│   │   ├── templates/     ← YOUR TEMPLATES GO HERE (Step 5)
+│   │   └── tests/         ← YOUR TESTS GO HERE (Step 5)
 │   └── inputs/
 │       └── schema.json    ← pre-filled skeleton
 └── dist/                  ← pack.py writes MY-SKILL-NAME-1.0.0.aiskill here
 ```
 
-### Step 3 — Author skill/SKILL.md
+### Step 4 — Author skill/SKILL.md
 
 This is the most important step. `skill/SKILL.md` is the entry point the AI reads
 when executing your new skill. The scaffolded file contains a skeleton — replace every
@@ -173,7 +202,7 @@ placeholder section with the real content for your skill:
 The skill is only as deterministic as its SKILL.md is precise. Ambiguous instructions
 produce ambiguous AI behaviour. Be exhaustive.
 
-### Step 4 — Write the assets
+### Step 5 — Write the assets
 
 Write your skill's actual computation into `skill/assets/scripts/`. Write unit tests
 in `skill/assets/tests/`. Tests must cover:
@@ -184,7 +213,7 @@ in `skill/assets/tests/`. Tests must cover:
 Asset scripts must be pure source files (Python, shell, JavaScript, etc.) — no compiled
 binaries. The runtime provides the interpreter.
 
-### Step 5 — Generate CARD.md
+### Step 6 — Generate CARD.md
 
 ```bash
 python3 skill/assets/scripts/build_card.py --skill-dir skill/
@@ -194,11 +223,11 @@ python3 skill/assets/scripts/build_card.py --skill-dir skill/
 consuming runtime shows a human when they select the package, before deciding whether to use
 it. It is generated deterministically from `skill/manifest.yaml` — the same manifest always
 produces the same `CARD.md`. **Never hand-edit `CARD.md`.** If `manifest.yaml`'s `name`,
-`description`, `version`, `capabilities`, or `permissions` change for any reason, re-run this
-step before packaging — do not package a `CARD.md` that's stale relative to the manifest it
-was generated from.
+`description`, `synopsis`, `version`, `capabilities`, or `permissions` change for any reason,
+re-run this step before packaging — do not package a `CARD.md` that's stale relative to the
+manifest it was generated from.
 
-### Step 6 — Run tests
+### Step 7 — Run tests
 
 ```bash
 cd /Volumes/ai-skill-packages/aiskills/AISKILL-MY-SKILL-NAME
@@ -208,7 +237,7 @@ python3 -m pytest skill/assets/tests/ -v
 **All tests must pass before packaging.** A failing test is a packaging blocker.
 The test suite is what separates a verified, trustworthy package from an ephemeral prompt.
 
-### Step 7 — Run pack.py
+### Step 8 — Run pack.py
 
 ```bash
 python3 skill/assets/scripts/pack.py \
@@ -221,16 +250,20 @@ pack.py will:
 1. Verify `skill/SYSTEM.md` byte-matches the canonical source at
    `assets/templates/SYSTEM.md` — **refuses to package if it doesn't**, since
    unlike `CARD.md`, `SYSTEM.md` should never legitimately vary at all
-2. Walk `skill/`, compute SHA-256 of every file except `checksums.yaml`
-3. Write `skill/checksums.yaml`
-4. ZIP the entire `skill/` directory into `dist/MY-SKILL-NAME-1.0.0.aiskill`
-5. Optionally copy the `.aiskill` to the website directory
-6. Print the git tag and `gh release create` commands to run next
+2. Verify `skill/README.md` byte-matches the repo-root `README.md` —
+   **refuses to package if they diverge**, since packaging only zips `skill/`
+   and `skill/README.md` is the only copy that ever travels with the
+   distributed `.aiskill` file (`.aiskill` spec v2.3.0)
+3. Walk `skill/`, compute SHA-256 of every file except `checksums.yaml`
+4. Write `skill/checksums.yaml`
+5. ZIP the entire `skill/` directory into `dist/MY-SKILL-NAME-1.0.0.aiskill`
+6. Optionally copy the `.aiskill` to the website directory
+7. Print the git tag and `gh release create` commands to run next
 
 The `dist/` folder inside this repo is the only source of truth for a finished `.aiskill` —
 there is no longer a separate dashboard drop-zone copy step.
 
-### Step 8 — Commit, tag, and release
+### Step 9 — Commit, tag, and release
 
 ```bash
 cd /Volumes/ai-skill-packages/aiskills/AISKILL-MY-SKILL-NAME
@@ -265,6 +298,7 @@ All inputs are passed as command-line arguments to `assets/scripts/convert.py`.
 | (neither given) | — | — | **Batch mode** — every directory in the repo containing a `SKILL.md` is discovered and converted |
 | `--dest-account` | yes | — | Destination account the package is published under, e.g. `Xamtastic` |
 | `--author-email` | yes | — | Contact email recorded in the manifest |
+| `--synopsis` | no | TODO placeholder | Multi-paragraph synopsis, hand-authored by reading the actual source skill. Only valid with `--source-path` (single-skill mode) — omit it for `--skills`/batch runs, where every generated package instead gets a TODO placeholder to fill in by hand afterward (see Step 5) |
 | `--github-org` | no | `--dest-account` | GitHub org/user for the destination repo URL, if different from `--dest-account` |
 | `--scratch-dir` | no | `/tmp/aiskill-convert-scratch` | Where the source repo is cloned |
 | `--attestation-for` | no | — | Re-invocation only: finalizes one previously-deferred skill (see Step 4) |
@@ -322,12 +356,16 @@ For every discovered skill, convert.py will:
    actual GitHub casing (the `.aiskill` spec's converted-package naming rule).
 6. Generate `manifest.yaml` with `origin: converted` and the full provenance
    field group (`source_owner`, `source_repo`, `source_path`, `converted_at`),
-   the required description suffix, and `capabilities`/`permissions` left as
-   an explicit placeholder — **never auto-inferred**, always authored by hand
-   in Step 5 below.
+   the required description suffix, `synopsis` (from `--synopsis` in
+   single-skill mode, or a TODO placeholder in batch/cherry-pick mode), and
+   `capabilities`/`permissions` left as an explicit placeholder — **never
+   auto-inferred**, always authored by hand in Step 5 below.
 7. Copy `SYSTEM.md` canonical verbatim, same as Track A.
-8. Generate `README.md` with the `## Origin` section, and — tier 2/3 only —
-   a `## License Attestation` section marked `PENDING`.
+8. Render one README from `README.repo.md.converted.template` — with the
+   `## Origin` section, and, tier 2/3 only, a `## License Attestation`
+   section marked `PENDING` — and write the identical result to both
+   `skill/README.md` and the repo-root `README.md`. The two copies must stay
+   byte-identical; `pack.py` (Step 6) refuses to package if they diverge.
 
 **Tier-1 (clean) skills are committed locally immediately, one after another,
 with no interruption.** Tier-2/3 skills are generated but left uncommitted and
@@ -378,7 +416,7 @@ For each skill convert.py deferred, in order:
 
 End with one summary: converted / attested-and-converted / still blocked.
 
-### Step 5 — Author capabilities and permissions by hand
+### Step 5 — Author capabilities, permissions, and synopsis by hand
 
 No source format (Agent Skills or otherwise) declares an equivalent to
 `.aiskill`'s capability tokens. Every generated `manifest.yaml` leaves
@@ -386,9 +424,16 @@ No source format (Agent Skills or otherwise) declares an equivalent to
 skill's `SKILL.md` actually does and author these yourself, the same as for
 an originally-authored package. Never infer this automatically.
 
+If `--synopsis` wasn't given (batch/cherry-pick mode, or a single conversion
+where it was omitted), `manifest.yaml` and both `README.md` copies still
+carry the TODO placeholder. Replace it with a genuine three-paragraph
+synopsis per skill (see Track A Step 2 for the recommended structure) before
+generating `CARD.md` in Step 6 — otherwise the placeholder text ships inside
+the package.
+
 ### Step 6 — Generate CARD.md, run tests, and pack — per completed skill
 
-Identical to Track A's Steps 5–7, run once per finalized skill (tier-1
+Identical to Track A's Steps 6–8, run once per finalized skill (tier-1
 immediately, tier-2/3 once attested):
 
 ```bash
@@ -433,6 +478,7 @@ https://openaiskillpackage.com/
 | `uuid` | yes | string | UUID4 — globally unique, collision-safe across registries and file systems. Generated once; never changes across versions. |
 | `version` | yes | semver | Package version (Semantic Versioning 2.0). Always a quoted string, e.g. `"1.0.0"`. |
 | `description` | yes | string | One-line purpose statement. Track B: gets the `... Upgraded from a skill originally authored by @{owner} on GitHub.` suffix. |
+| `synopsis` | yes | string (multi-paragraph) | Expanded, hand-authored account of the skill (what it does / when to reach for it / why to trust this package) — feeds both `README.md`'s opening and `CARD.md`'s rendering. Never derived by parsing `README.md`. |
 | `author` | yes | string | Author name or organisation (Track A) / destination account (Track B) |
 | `entry` | yes | string | Relative path to SKILL.md, always `SKILL.md` |
 | `system_protocol_version` | yes | string | Which `SYSTEM.md` protocol version this package ships — must match `SYSTEM.md`'s own Protocol Version header exactly |
@@ -467,6 +513,8 @@ All template files in `assets/templates/` use `<<<PLACEHOLDER>>>` substitution s
 | `<<<UUID>>>` | Generated UUID4 |
 | `<<<VERSION>>>` | Always `1.0.0` for new skills |
 | `<<<DESCRIPTION>>>` | `--description` |
+| `<<<SYNOPSIS>>>` | `--synopsis`, as given (for `README.md`) |
+| `<<<SYNOPSIS_BLOCK>>>` | `--synopsis`, indented two spaces per line (for `manifest.yaml`'s `synopsis: \|` block scalar) |
 | `<<<AUTHOR>>>` | `--author` |
 | `<<<AUTHOR_EMAIL>>>` | `--author-email` |
 | `<<<LICENSE>>>` | `--license` |
@@ -488,6 +536,7 @@ All of the above (naming adjusted per the Track B naming table), plus:
 | `<<<CONVERTED_AT>>>` | Today's date |
 | `<<<AISKILL_SPEC_VERSION>>>` | The `.aiskill` spec version this conversion targets |
 | `<<<LICENSE_ATTESTATION_BLOCK>>>` | Empty for tier 1; a `license_attestation:` YAML block (possibly `PENDING`) for tier 2/3 |
+| `<<<SYNOPSIS>>>` / `<<<SYNOPSIS_BLOCK>>>` | `--synopsis` if given (single-skill mode); otherwise the TODO placeholder, per skill, to be replaced by hand (Step 5) |
 
 ### SKILL.md.template
 | Token | Value source |
@@ -500,22 +549,31 @@ All of the above (naming adjusted per the Track B naming table), plus:
 Track B does not use `SKILL.md.template` at all — the converted `SKILL.md`
 body comes directly from the source skill (path-rewritten), not a skeleton.
 
-### README.repo.md.template / README.skill.md.template (Track A)
+### README.repo.md.template (Track A)
+
+There is only **one** README template per track — no separate skill-level
+template. It is rendered once and the identical result is written to both
+the repo root and `skill/README.md` (Track A: Step 3; Track B: Step 2, item
+8) — the two copies must be byte-identical, and `pack.py` refuses to package
+if they diverge (`.aiskill` spec v2.3.0, #file-structure).
+
 | Token | Value source |
 |---|---|
 | `<<<SLUG>>>` | Derived slug |
 | `<<<NAME>>>` | `--name` |
 | `<<<DESCRIPTION>>>` | `--description` |
+| `<<<SYNOPSIS>>>` | `--synopsis` |
 | `<<<AUTHOR>>>` | `--author` |
 | `<<<GITHUB_ORG>>>` | `--github-org` |
 | `<<<LICENSE>>>` | `--license` |
 | `<<<VERSION>>>` | `1.0.0` |
 
-### README.repo.md.converted.template / README.skill.md.converted.template (Track B)
+### README.repo.md.converted.template (Track B)
 All of the above, plus `<<<SOURCE_OWNER>>>`, `<<<SOURCE_REPO>>>`,
 `<<<SOURCE_PATH>>>`, `<<<CONVERTED_AT>>>`, `<<<AISKILL_SPEC_VERSION>>>`, and
 `<<<LICENSE_ATTESTATION_SECTION>>>` (empty for tier 1; a full `## License
-Attestation` section, possibly marked `PENDING`, for tier 2/3).
+Attestation` section, possibly marked `PENDING`, for tier 2/3). Same
+single-template-written-twice rule as Track A above.
 
 ### CHANGELOG.md.template (Track A) / CHANGELOG.md.converted.template (Track B)
 | Token | Value source |
@@ -546,17 +604,22 @@ Attestation` section, possibly marked `PENDING`, for tier 2/3).
       it wasn't hand-edited before that point
 - [ ] `manifest.yaml`'s `system_protocol_version` matches `SYSTEM.md`'s own
       Protocol Version header
+- [ ] `manifest.yaml`'s `synopsis` is real, hand-authored content — not left
+      blank or copy-pasted verbatim from `description`
 - [ ] `skill/SKILL.md` has all placeholder sections replaced with real content
 - [ ] At least one script exists in `skill/assets/scripts/`
 - [ ] At least one test exists in `skill/assets/tests/`
 - [ ] All tests pass: `python3 -m pytest skill/assets/tests/ -v`
 - [ ] `skill/manifest.yaml` has `uuid` field present and is a valid UUID4
 - [ ] `skill/CARD.md` has been (re)generated by `build_card.py` and reflects the current
-      `manifest.yaml` — never hand-edited, never stale
-- [ ] `skill/README.md` describes the skill purpose, prerequisites, and quick start
+      `manifest.yaml` (including `synopsis`) — never hand-edited, never stale
+- [ ] Repo-root `README.md` and `skill/README.md` are byte-identical —
+      `pack.py` enforces this and will refuse to package otherwise, but check
+      neither copy was hand-edited independently after generation
+- [ ] `README.md` describes the skill purpose, prerequisites, and quick start,
+      and is complete and suitable for public viewing on GitHub
 - [ ] `skill/CHANGELOG.md` has an entry for v1.0.0
 - [ ] `skill/inputs/schema.json` accurately describes the inputs (if any)
-- [ ] Repo-level `README.md` is complete and suitable for public viewing on GitHub
 - [ ] pack.py has been run and `skill/checksums.yaml` is present
 - [ ] `dist/{SLUG}-1.0.0.aiskill` exists and is the file to attach to the GitHub release
 
@@ -570,10 +633,15 @@ Attestation` section, possibly marked `PENDING`, for tier 2/3).
       authorization given for a different skill or an earlier session
 - [ ] `capabilities`/`permissions` were hand-authored by reading the actual
       `SKILL.md` content — never left as the generated placeholder
+- [ ] `manifest.yaml`'s `synopsis` is real, hand-authored content for every
+      finalized skill — the TODO placeholder never ships (see Step 5)
 - [ ] Every path reference inside the converted `SKILL.md` uses the
       `assets/`-prefixed form — spot-check against the source's own bare
       references (`references/`, `scripts/`, `examples/`, `templates/`)
 - [ ] `skill/SYSTEM.md` byte-matches the canonical source (same as Track A)
+- [ ] Repo-root `README.md` and `skill/README.md` are byte-identical for
+      every finalized skill (same as Track A) — if the synopsis placeholder
+      was replaced by hand, make sure it was replaced in both copies
 - [ ] `manifest.yaml`'s `origin`, `source_owner`, `source_repo`, `source_path`,
       `converted_at` are all present and correct
 - [ ] The repo name matches `AISKILL-{origin}-{SLUG}` with the origin segment

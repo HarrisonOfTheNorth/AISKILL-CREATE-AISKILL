@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-convert.py — CREATE-AISKILL v2.3.0
+convert.py — CREATE-AISKILL v2.4.0
 Converts an existing skill (or several) from a foreign "Agent Skills" format repo
 (agentskills.io) into one or more AISKILL-{origin}-{SLUG} repository structures
 (Track B). For scaffolding a brand-new, originally-authored package, see
@@ -54,8 +54,15 @@ HOMEPAGE = "https://openaiskillpackage.com/"
 MINIMUM_RUNTIME = "1.0.0"
 DEFAULT_VERSION = "1.0.0"
 SYSTEM_PROTOCOL_VERSION = "1.0.0"
-AISKILL_SPEC_VERSION = "v2.2.1"
+AISKILL_SPEC_VERSION = "v2.3.0"
 ATTESTATION_PENDING = "PENDING"
+SYNOPSIS_PLACEHOLDER = (
+    "TODO: author a synopsis by hand before packaging -- never auto-extracted from "
+    "source content. Recommended structure: what it does, when to reach for it, and "
+    "why to trust this package (see the .aiskill spec's synopsis field). When "
+    "converting a batch or cherry-picked list, every skill gets this same placeholder "
+    "-- write each one's real synopsis afterward, same as capabilities/permissions."
+)
 
 # Source-format directory name -> .aiskill destination. "evals" is deliberately
 # absent -- excluded from the package entirely (authoring-time aid only, per the
@@ -107,6 +114,13 @@ def capabilities_to_yaml_list(capabilities_str: str) -> str:
 
 def tags_to_yaml_inline(tags: list) -> str:
     return "[" + ", ".join(tags) + "]"
+
+
+def synopsis_to_yaml_block(synopsis: str) -> str:
+    """Indents a multi-paragraph synopsis two spaces per line, for embedding
+    under manifest.yaml's `synopsis: |` block scalar."""
+    lines = synopsis.strip("\n").split("\n")
+    return "\n".join(f"  {line}" if line else "" for line in lines)
 
 
 def substitute(template: str, tokens: dict) -> str:
@@ -289,9 +303,11 @@ def rewrite_path_references(body: str, mapped_dirs: list) -> str:
 
 # ── Package generation ────────────────────────────────────────────────────────
 
-def build_readme_origin_section(templates_dir: Path, kind: str, tokens: dict, attestation_block: str) -> str:
-    tmpl_name = f"README.{kind}.md.converted.template"
-    tmpl = (templates_dir / tmpl_name).read_text(encoding="utf-8")
+def build_readme(templates_dir: Path, tokens: dict, attestation_block: str) -> str:
+    """One canonical README template, rendered once -- the same rendered string is
+    written to both the repo root and skill/, since the two copies must be
+    byte-identical (.aiskill spec v2.3.0, #file-structure)."""
+    tmpl = (templates_dir / "README.repo.md.converted.template").read_text(encoding="utf-8")
     t = dict(tokens)
     t["LICENSE_ATTESTATION_SECTION"] = attestation_block
     return substitute(tmpl, t)
@@ -336,6 +352,7 @@ def generate_package(
     dest_account: str,
     author_email: str,
     github_org: str,
+    synopsis: str = None,
 ) -> dict:
     """Generates one converted .aiskill repo on disk. Returns a result dict with
     tier/repo_root/etc for the caller to report and decide commit vs defer."""
@@ -393,6 +410,8 @@ def generate_package(
         "UUID": skill_uuid,
         "VERSION": DEFAULT_VERSION,
         "DESCRIPTION": f"{description}. Upgraded from a skill originally authored by @{source_owner} on GitHub.",
+        "SYNOPSIS": (synopsis or SYNOPSIS_PLACEHOLDER).strip(),
+        "SYNOPSIS_BLOCK": synopsis_to_yaml_block(synopsis or SYNOPSIS_PLACEHOLDER),
         "AUTHOR": dest_account,
         "AUTHOR_EMAIL": author_email,
         "TYPE": "instructional" if not mapped_dirs or "scripts" not in mapped_dirs else "procedural",
@@ -420,10 +439,9 @@ def generate_package(
     write_file(skill_root / "manifest.yaml", manifest_content)
 
     readme_attestation = attestation_readme_block(tier, license_label)
-    skill_readme = build_readme_origin_section(templates_dir, "skill", tokens, readme_attestation)
-    write_file(skill_root / "README.md", skill_readme)
-    repo_readme = build_readme_origin_section(templates_dir, "repo", tokens, readme_attestation)
-    write_file(repo_root / "README.md", repo_readme)
+    readme_content = build_readme(templates_dir, tokens, readme_attestation)
+    write_file(skill_root / "README.md", readme_content)
+    write_file(repo_root / "README.md", readme_content)
 
     changelog_content = substitute(
         (templates_dir / "CHANGELOG.md.converted.template").read_text(encoding="utf-8"), tokens
@@ -513,6 +531,11 @@ def parse_args():
     p.add_argument("--skills", help="Comma-separated cherry-picked skill paths (mutually exclusive with --source-path)")
     p.add_argument("--dest-account", help="Destination account, e.g. Xamtastic (required unless --attestation-for)")
     p.add_argument("--author-email", help="Required unless --attestation-for")
+    p.add_argument("--synopsis",
+                   help="Multi-paragraph expansion of the description, hand-authored by reading the "
+                        "actual source skill (never auto-extracted). Only meaningful for a single-skill "
+                        "--source-path conversion -- batch/cherry-pick runs get a TODO placeholder per "
+                        "skill instead, to be filled in by hand afterward, same as capabilities/permissions")
     p.add_argument("--github-org", help="Defaults to --dest-account if omitted")
     p.add_argument("--scratch-dir", default="/tmp/aiskill-convert-scratch")
     p.add_argument("--attestation-for", help="source_path of a previously-deferred skill to finalize")
@@ -546,6 +569,15 @@ def main():
     if args.source_path and args.skills:
         print("Error: --source-path and --skills are mutually exclusive", file=sys.stderr)
         sys.exit(1)
+    if args.synopsis and not args.source_path:
+        print(
+            "Error: --synopsis only applies to a single-skill --source-path conversion "
+            "(it would be misapplied to every skill in a --skills/batch run). Omit it for "
+            "batch/cherry-pick runs -- each generated package gets a TODO placeholder to "
+            "fill in by hand afterward instead.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     templates_dir = Path(__file__).parent.parent / "templates"
     scratch_dir = Path(args.scratch_dir).expanduser()
@@ -561,6 +593,7 @@ def main():
         result = generate_package(
             aiskills_root, templates_dir, source_repo_dir, source_path,
             source_owner, source_repo, args.dest_account, args.author_email, github_org,
+            synopsis=args.synopsis,
         )
         if result["tier"] == 1:
             run(["git", "init"], cwd=result["repo_root"])
@@ -582,6 +615,9 @@ def main():
               f"--source-repo {args.source_repo} --attestation-for {r['source_path']} "
               f"--attestation-by \"...\" --attestation-reasoning \"...\"")
     print(f"{'='*60}\n")
+    if not args.synopsis:
+        print("Every generated manifest.yaml/README.md has a TODO synopsis placeholder -- "
+              "write each package's real 3-paragraph synopsis by hand before packaging.")
     print("Review with the user before creating any GitHub repo or pushing.")
 
 

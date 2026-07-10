@@ -16,6 +16,8 @@ from convert import (
     id_from_dest_and_slug,
     classify_license_tier,
     rewrite_path_references,
+    synopsis_to_yaml_block,
+    SYNOPSIS_PLACEHOLDER,
 )
 
 
@@ -159,3 +161,23 @@ def test_does_not_touch_unrelated_text():
     body = "This skill has no bundled scripts or references at all."
     result = rewrite_path_references(body, [])
     assert result == body
+
+
+# ── synopsis handling (.aiskill spec v2.3.0) ─────────────────────────────────
+
+def test_synopsis_to_yaml_block_indents():
+    result = synopsis_to_yaml_block("First.\n\nSecond.")
+    assert result.split("\n") == ["  First.", "", "  Second."]
+
+
+def test_synopsis_placeholder_is_nonempty_and_flags_todo():
+    # Batch/cherry-pick conversions with no --synopsis get this placeholder --
+    # must be obviously a TODO, never mistaken for a real synopsis.
+    assert "TODO" in SYNOPSIS_PLACEHOLDER
+    assert len(SYNOPSIS_PLACEHOLDER) > 0
+
+
+def test_readme_converted_template_has_synopsis_token():
+    tmpl_path = Path(__file__).parent.parent / "templates" / "README.repo.md.converted.template"
+    content = tmpl_path.read_text(encoding="utf-8")
+    assert "<<<SYNOPSIS>>>" in content

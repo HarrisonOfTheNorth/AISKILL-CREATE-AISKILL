@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scaffold.py — CREATE-AISKILL v2.3.0
+scaffold.py — CREATE-AISKILL v2.4.0
 Creates a complete AISKILL-{SLUG} repository structure for a new, originally-authored
 .aiskill package (Track A). For converting an existing skill from another format, see
 convert.py (Track B) instead.
@@ -58,6 +58,13 @@ def tags_to_yaml_inline(tags: list) -> str:
     return "[" + ", ".join(tags) + "]"
 
 
+def synopsis_to_yaml_block(synopsis: str) -> str:
+    """Indents a multi-paragraph synopsis two spaces per line, for embedding
+    under manifest.yaml's `synopsis: |` block scalar."""
+    lines = synopsis.strip("\n").split("\n")
+    return "\n".join(f"  {line}" if line else "" for line in lines)
+
+
 # ── Template substitution ────────────────────────────────────────────────────
 
 def substitute(template: str, tokens: dict) -> str:
@@ -108,6 +115,10 @@ def parse_args():
                    help="Human-readable skill name, e.g. 'WCAG Contrast Audit'")
     p.add_argument("--description", required=True,
                    help="One-line purpose statement")
+    p.add_argument("--synopsis", required=True,
+                   help="Multi-paragraph expansion of --description (recommended structure: "
+                        "what it does, when to reach for it, why to trust this package). "
+                        "Hand-authored, never derived from README.md")
     p.add_argument("--author", required=True,
                    help="Author name or organisation")
     p.add_argument("--author-email", required=True,
@@ -168,6 +179,8 @@ def main():
         "UUID": skill_uuid,
         "VERSION": DEFAULT_VERSION,
         "DESCRIPTION": args.description,
+        "SYNOPSIS": args.synopsis.strip(),
+        "SYNOPSIS_BLOCK": synopsis_to_yaml_block(args.synopsis),
         "AUTHOR": args.author,
         "AUTHOR_EMAIL": args.author_email,
         "TYPE": args.type,
@@ -192,10 +205,8 @@ def main():
     template_map = {
         "manifest.yaml.template":      repo_root / "skill" / "manifest.yaml",
         "SKILL.md.template":           repo_root / "skill" / "SKILL.md",
-        "README.skill.md.template":    repo_root / "skill" / "README.md",
         "CHANGELOG.md.template":       repo_root / "skill" / "CHANGELOG.md",
         "schema.json.template":        repo_root / "skill" / "inputs" / "schema.json",
-        "README.repo.md.template":     repo_root / "README.md",
         "gitignore.template":          repo_root / ".gitignore",
     }
 
@@ -206,6 +217,17 @@ def main():
             continue
         content = substitute(tmpl_path.read_text(encoding="utf-8"), tokens)
         write_file(dest_path, content)
+
+    # README.md — one canonical template, rendered once and written identically to
+    # both the repo root and skill/, since packaging only ever zips skill/'s contents
+    # and skill/README.md is the only copy a recipient of the distributed .aiskill
+    # file ever sees (.aiskill spec v2.3.0, #file-structure). The two copies must be
+    # byte-identical, so both are written from the exact same rendered string.
+    readme_content = substitute(
+        (templates_dir / "README.repo.md.template").read_text(encoding="utf-8"), tokens
+    )
+    write_file(repo_root / "README.md", readme_content)
+    write_file(repo_root / "skill" / "README.md", readme_content)
 
     # Repo-level CHANGELOG uses same template as skill-level
     repo_changelog = substitute(

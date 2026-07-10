@@ -1,8 +1,34 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.3.1
+version: 2.4.0
 description: Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
+synopsis: |
+  Create AI Skill Package is the meta-skill that produces every other .aiskill
+  package in this ecosystem. It has two tracks: scaffold a brand-new,
+  originally-authored package from a plain-language description of what it
+  should do (Track A), or convert an existing skill already built to the open
+  Agent Skills format -- SKILL.md with YAML frontmatter, as used by Claude
+  Code, Cursor, and others -- into one or more .aiskill packages, carrying
+  forward the original license and provenance rather than re-authoring it
+  from scratch (Track B).
+
+  Reach for Track A whenever a procedure is worth turning into a verified,
+  versioned, unit-tested package instead of a prompt kept in a notes file --
+  something you or a team will run repeatedly and want to trust. Reach for
+  Track B when a skill already exists for a different AI agent format and
+  you want it brought into this ecosystem's stronger verification model:
+  mandatory unit testing, checksummed integrity, and a registry-based
+  external verification check that neither the Agent Skills format nor most
+  other skill formats provide on their own.
+
+  This is the one .aiskill package that was not itself produced by another
+  .aiskill package -- every package that exists or will exist in this
+  ecosystem was scaffolded or converted using this one. It ships with a full
+  unit test suite covering both tracks' naming conventions, per-skill license
+  classification, and the automatic assets/-prefixed path rewriting that
+  conversion depends on, and every package it produces carries SYSTEM.md's
+  external verification protocol from the moment it's created.
 author: Anthony Harrison
 authorEmail: widgets@penrithbeacon.com
 entry: SKILL.md
@@ -26,6 +52,13 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.4.0
+    changes:
+      - "BREAKING (.aiskill spec v2.3.0): new required manifest field synopsis -- a multi-paragraph, hand-authored expansion of description, feeding both README.md's opening and CARD.md's rendering (build_card.py updated accordingly)"
+      - "Retired README.skill.md.template and README.skill.md.converted.template -- there is now exactly one README template per track (README.repo.md.template / .converted.template), rendered once and written identically to both the repo root and skill/README.md"
+      - "scaffold.py and convert.py both now require --synopsis (convert.py: required only in single-skill --source-path mode; batch/cherry-pick runs get a TODO placeholder per skill, to be hand-authored afterward, same as capabilities/permissions)"
+      - "pack.py gained a new pre-flight check, verify_readme_matches_root -- refuses to package if the repo-root README.md and skill/README.md aren't byte-identical, matching the .aiskill spec v2.3.0 requirement enforced independently by the Cup and Ring Registry at registration"
+      - "SKILL.md: Track A gained a new Step 2 (Write a synopsis), renumbering Steps 2-8 to 3-9; Track B's Steps 2 and 5 updated to cover synopsis generation and hand-authoring; Manifest Field Reference, Template Token Reference, and both Pre-Release Checklists updated to match"
   - version: 2.3.1
     changes:
       - "Fixed convert.py: str | None annotations were unguarded and would raise a TypeError on Python 3.8/3.9 -- added from __future__ import annotations. Caught while fact-checking the README's own Python version claim"

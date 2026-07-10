@@ -3,6 +3,8 @@ id: <<<ID>>>
 uuid: <<<UUID>>>
 version: <<<VERSION>>>
 description: <<<DESCRIPTION>>>
+synopsis: |
+<<<SYNOPSIS_BLOCK>>>
 author: <<<AUTHOR>>>
 authorEmail: <<<AUTHOR_EMAIL>>>
 entry: SKILL.md

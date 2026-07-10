@@ -2,6 +2,8 @@
 
 **<<<NAME>>>** — <<<DESCRIPTION>>>
 
+<<<SYNOPSIS>>>
+
 | | |
 |---|---|
 | Version | `<<<VERSION>>>` |
@@ -48,7 +50,7 @@ Using the Skill Package at /path/to/<<<SLUG>>>-<<<VERSION>>>.aiskill,
 <<<SLUG>>>-<<<VERSION>>>.aiskill  (ZIP archive)
 ├── manifest.yaml          # identity & metadata
 ├── SKILL.md               # AI entry point — execution instructions
-├── README.md              # this file (skill-level)
+├── README.md              # this file — byte-identical to the repo-root copy
 ├── CHANGELOG.md           # version history
 ├── checksums.yaml         # SHA-256 integrity hashes
 ├── assets/

@@ -11,6 +11,7 @@ from scaffold import (
     id_from_domain_and_slug,
     tags_from_slug,
     capabilities_to_yaml_list,
+    synopsis_to_yaml_block,
     substitute,
 )
 
@@ -86,8 +87,35 @@ def test_manifest_template_has_required_fields():
     tmpl_path = Path(__file__).parent.parent / "templates" / "manifest.yaml.template"
     content = tmpl_path.read_text(encoding="utf-8")
     required = ["<<<NAME>>>", "<<<ID>>>", "<<<UUID>>>", "<<<VERSION>>>",
-                "<<<DESCRIPTION>>>", "<<<AUTHOR>>>", "<<<AUTHOR_EMAIL>>>",
-                "<<<LICENSE>>>", "<<<MINIMUM_RUNTIME>>>", "<<<CAPABILITIES_LIST>>>",
-                "<<<TYPE>>>"]
+                "<<<DESCRIPTION>>>", "<<<SYNOPSIS_BLOCK>>>", "<<<AUTHOR>>>",
+                "<<<AUTHOR_EMAIL>>>", "<<<LICENSE>>>", "<<<MINIMUM_RUNTIME>>>",
+                "<<<CAPABILITIES_LIST>>>", "<<<TYPE>>>"]
     for token in required:
         assert token in content, f"Missing token {token} in manifest.yaml.template"
+
+
+# ── synopsis handling (.aiskill spec v2.3.0) ─────────────────────────────────
+
+def test_synopsis_to_yaml_block_indents_every_line():
+    result = synopsis_to_yaml_block("Paragraph one.\n\nParagraph two.")
+    lines = result.split("\n")
+    assert lines[0] == "  Paragraph one."
+    assert lines[1] == ""
+    assert lines[2] == "  Paragraph two."
+
+
+def test_synopsis_to_yaml_block_strips_outer_blank_lines():
+    result = synopsis_to_yaml_block("\n\nSome text.\n\n")
+    assert result == "  Some text."
+
+
+def test_readme_template_has_synopsis_token():
+    tmpl_path = Path(__file__).parent.parent / "templates" / "README.repo.md.template"
+    content = tmpl_path.read_text(encoding="utf-8")
+    assert "<<<SYNOPSIS>>>" in content
+
+
+def test_readme_skill_templates_are_retired():
+    templates_dir = Path(__file__).parent.parent / "templates"
+    assert not (templates_dir / "README.skill.md.template").exists()
+    assert not (templates_dir / "README.skill.md.converted.template").exists()

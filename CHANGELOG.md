@@ -6,6 +6,21 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.4.0] — 2026-07-10
+
+### Added
+- **BREAKING** (`.aiskill` spec v2.3.0): required manifest field `synopsis`,
+  feeding both `README.md` and `CARD.md`
+
+### Changed
+- One README template per track — rendered once, written identically to
+  repo root and `skill/README.md`; `pack.py` now refuses to package if they
+  diverge
+- `scaffold.py`/`convert.py` require `--synopsis` (batch/cherry-pick: TODO
+  placeholder per skill, hand-authored afterward)
+- `SKILL.md` renumbered (Track A gains a new Step 2); reference tables and
+  checklists updated to match
+
 ## [2.3.1] — 2026-07-10
 
 ### Fixed

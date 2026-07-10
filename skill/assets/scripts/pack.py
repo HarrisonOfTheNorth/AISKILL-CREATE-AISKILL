@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-pack.py — CREATE-AISKILL v2.2.0
+pack.py — CREATE-AISKILL v2.4.0
 Verifies SYSTEM.md conformance, generates checksums.yaml, and packages the
 skill/ directory into a .aiskill archive.
 """
@@ -55,6 +55,38 @@ def verify_system_md_matches_canonical(skill_dir: Path) -> None:
             f"Error: {system_md_path} does not match the canonical SYSTEM.md "
             f"({canonical_path}). SYSTEM.md is never hand-edited -- copy the "
             f"canonical file verbatim, do not modify it.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+
+# ── README.md byte-identity check ────────────────────────────────────────────
+# The repo-root README.md and skill/README.md must be byte-identical (.aiskill
+# spec v2.3.0, #file-structure) -- packaging only ever zips skill/'s contents,
+# so skill/README.md is the only copy that ever travels with the distributed
+# .aiskill file. Refuse to package on any divergence, same principle as the
+# SYSTEM.md check above: catch it locally, before it ever reaches the registry's
+# own independent check.
+
+def verify_readme_matches_root(skill_dir: Path) -> None:
+    root_readme_path = skill_dir.parent / "README.md"
+    skill_readme_path = skill_dir / "README.md"
+
+    if not skill_readme_path.exists():
+        print(f"Error: {skill_readme_path} not found. Every .aiskill package must include README.md.", file=sys.stderr)
+        sys.exit(1)
+    if not root_readme_path.exists():
+        print(f"Error: {root_readme_path} not found -- the repo-root README.md is required so it can "
+              f"be compared against {skill_readme_path}.", file=sys.stderr)
+        sys.exit(1)
+
+    root_text = root_readme_path.read_text(encoding="utf-8")
+    skill_text = skill_readme_path.read_text(encoding="utf-8")
+    if root_text != skill_text:
+        print(
+            f"Error: {root_readme_path} and {skill_readme_path} are not byte-identical. "
+            f"The .aiskill spec requires both README.md copies to match exactly -- "
+            f"fix whichever one drifted (or regenerate both from the same source) before packaging.",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -157,6 +189,10 @@ def main():
     # ── SYSTEM.md conformance ──
     verify_system_md_matches_canonical(skill_dir)
     print("  SYSTEM.md matches canonical text")
+
+    # ── README.md byte-identity ──
+    verify_readme_matches_root(skill_dir)
+    print("  README.md matches repo-root copy")
 
     # ── Checksums ──
     print("  computing checksums...")

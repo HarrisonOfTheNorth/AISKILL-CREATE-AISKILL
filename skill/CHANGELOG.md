@@ -6,6 +6,34 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.4.0] — 2026-07-10
+
+### Added
+- **BREAKING** (`.aiskill` spec v2.3.0): new required manifest field `synopsis`
+  — a multi-paragraph, hand-authored expansion of `description`, feeding both
+  `README.md`'s opening and `CARD.md`'s rendering (`build_card.py` updated
+  accordingly)
+
+### Changed
+- Retired `README.skill.md.template` and `README.skill.md.converted.template`
+  — there is now exactly one README template per track
+  (`README.repo.md.template` / `.converted.template`), rendered once and
+  written identically to both the repo root and `skill/README.md`
+- `scaffold.py` and `convert.py` both now require `--synopsis` (`convert.py`:
+  required only in single-skill `--source-path` mode; batch/cherry-pick runs
+  get a TODO placeholder per skill, to be hand-authored afterward, same as
+  capabilities/permissions)
+- `pack.py` gained a new pre-flight check, `verify_readme_matches_root` —
+  refuses to package if the repo-root `README.md` and `skill/README.md`
+  aren't byte-identical, matching the `.aiskill` spec v2.3.0 requirement
+  enforced independently by the Cup and Ring Registry at registration
+- `SKILL.md`: Track A gained a new Step 2 (Write a synopsis), renumbering
+  Steps 2–8 to 3–9; Track B's Steps 2 and 5 updated to cover synopsis
+  generation and hand-authoring; Manifest Field Reference, Template Token
+  Reference, and both Pre-Release Checklists updated to match
+- This package's own README rewritten to include a synopsis and made
+  byte-identical between the repo root and `skill/`, dogfooding the new rule
+
 ## [2.3.1] — 2026-07-10
 
 ### Fixed

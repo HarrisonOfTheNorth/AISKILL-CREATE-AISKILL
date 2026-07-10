@@ -7,6 +7,7 @@
     "aiskills_root",
     "name",
     "description",
+    "synopsis",
     "author",
     "author_email",
     "type",
@@ -25,6 +26,10 @@
     "description": {
       "type": "string",
       "description": "One-line purpose statement written in the third person (e.g. 'Audits foreground/background colour pairs for WCAG 2.1 contrast compliance.')."
+    },
+    "synopsis": {
+      "type": "string",
+      "description": "Multi-paragraph expansion of description, hand-authored (recommended structure: what it does, when to reach for it, why to trust this package). Feeds README.md's opening and CARD.md's rendering -- never derived by parsing README.md."
     },
     "author": {
       "type": "string",

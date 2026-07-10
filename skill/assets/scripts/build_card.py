@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-build_card.py — CREATE-AISKILL v2.3.0
+build_card.py — CREATE-AISKILL v2.4.0
 Deterministically generates CARD.md from manifest.yaml.
 Same inputs always produce the same output — CARD.md is never hand-edited.
 """
@@ -53,6 +53,8 @@ CARD_TEMPLATE = """# {name}
 
 {description}
 
+{synopsis}
+
 **Version:** {version}
 **Author:** {author}
 **License:** {license}
@@ -79,9 +81,11 @@ Re-run `build_card.py` after any `manifest.yaml` change, before packaging.*
 
 def build_card(manifest: dict) -> str:
     description = str(manifest.get("description", "")).strip()
+    synopsis = str(manifest.get("synopsis", "")).strip()
     return CARD_TEMPLATE.format(
         name=manifest.get("name", ""),
         description=description,
+        synopsis=synopsis,
         version=manifest.get("version", ""),
         author=manifest.get("author", ""),
         license=manifest.get("license", ""),
