@@ -1,7 +1,7 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.4.0
+version: 2.4.1
 description: Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 synopsis: |
   Create AI Skill Package is the meta-skill that produces every other .aiskill
@@ -52,6 +52,9 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.4.1
+    changes:
+      - "fix: copy_skill_assets no longer silently drops top-level source directories/files outside the fixed scripts/references/examples/templates/assets DIR_MAP -- caught converting claude-api (per-language subdirs), slack-gif-creator (bare core/ module + requirements.txt), and theme-factory (themes/ + a loose showcase PDF), all 3 of which were shipping with zero bundled files despite their SKILL.md explicitly referencing that content. Unrecognized directories/files now copy through to assets/templates/<original-name> instead of being dropped."
   - version: 2.4.0
     changes:
       - "BREAKING (.aiskill spec v2.3.0): new required manifest field synopsis -- a multi-paragraph, hand-authored expansion of description, feeding both README.md's opening and CARD.md's rendering (build_card.py updated accordingly)"

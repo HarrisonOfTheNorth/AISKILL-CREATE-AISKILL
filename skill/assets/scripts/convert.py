@@ -265,11 +265,28 @@ def classify_license_tier(license_text: str | None) -> tuple:
 
 # ── Directory mapping + path-reference rewriting ─────────────────────────────
 
+KNOWN_NON_ASSET_FILES = {"SKILL.md", "LICENSE.txt", "LICENSE", "LICENSE.md", "README.md"}
+
+
 def copy_skill_assets(source_skill_dir: Path, dest_skill_dir: Path) -> list:
     """Copies scripts/references/examples/templates/assets subdirs per DIR_MAP,
-    skipping evals/ entirely. Returns the list of source dir names actually
-    found and mapped (used to know which path references need rewriting)."""
+    skipping evals/ entirely. Real-world source repos don't all follow that
+    scripts/references/templates convention -- e.g. claude-api's per-language
+    subdirectories (python/, typescript/, ...), slack-gif-creator's bare core/
+    module + requirements.txt, theme-factory's themes/ + a loose showcase PDF.
+    Any top-level directory or file not recognized by DIR_MAP (and not one of
+    the known non-asset files) is preserved rather than silently dropped:
+    unrecognized directories copy through to assets/templates/<original-name>/,
+    unrecognized loose files copy straight into assets/templates/. This was a
+    real bug caught converting claude-api/slack-gif-creator/theme-factory --
+    those 3 packages were shipping with zero bundled files despite their
+    SKILL.md explicitly referencing per-language docs, a Python module, and a
+    themes directory, because copy_skill_assets only ever looked at 5 fixed
+    names. Returns a list of (src_name, dest_rel) pairs for everything mapped,
+    used both to rewrite path references and to build the SKILL.md asset tree.
+    """
     mapped = []
+
     for src_name, dest_rel in DIR_MAP.items():
         src_dir = source_skill_dir / src_name
         if not src_dir.is_dir():
@@ -282,20 +299,47 @@ def copy_skill_assets(source_skill_dir: Path, dest_skill_dir: Path) -> list:
                 target = dest_dir / rel
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(f.read_bytes())
-        mapped.append(src_name)
+        mapped.append((src_name, dest_rel))
+
+    known_names = set(DIR_MAP) | {"evals"}
+    for entry in sorted(source_skill_dir.iterdir()):
+        if entry.name in known_names or entry.name in KNOWN_NON_ASSET_FILES:
+            continue
+        if entry.is_dir():
+            dest_rel = f"assets/templates/{entry.name}"
+            dest_dir = dest_skill_dir / dest_rel
+            dest_dir.mkdir(parents=True, exist_ok=True)
+            for f in sorted(entry.rglob("*")):
+                if f.is_file():
+                    rel = f.relative_to(entry)
+                    target = dest_dir / rel
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(f.read_bytes())
+            mapped.append((entry.name, dest_rel))
+        elif entry.is_file():
+            dest_rel = f"assets/templates/{entry.name}"
+            dest_dir = dest_skill_dir / "assets" / "templates"
+            dest_dir.mkdir(parents=True, exist_ok=True)
+            (dest_dir / entry.name).write_bytes(entry.read_bytes())
+            mapped.append((entry.name, dest_rel))
+
     return mapped
 
 
 def rewrite_path_references(body: str, mapped_dirs: list) -> str:
     """Rewrites bare source-convention path references (references/foo.md,
-    scripts/bar.py, templates/baz.html, examples/...) to their assets/-prefixed
+    scripts/bar.py, templates/baz.html, examples/..., or a catch-all mapping
+    like core/ or a loose theme-showcase.pdf) to their assets/-prefixed
     equivalents -- this is exactly the bug caught by hand in 5 of 6 Phase B
-    packages before release. Order matters only in that longer/more-specific
-    names should be replaced first; none of DIR_MAP's keys are substrings of
-    each other so plain sequential replace is safe."""
+    packages before release. mapped_dirs is a list of (src_name, dest_rel)
+    pairs, as returned by copy_skill_assets -- dest_rel is used directly rather
+    than re-derived from DIR_MAP, since catch-all entries aren't in DIR_MAP at
+    all. Note: this only rewrites path-shaped references (trailing slash or
+    backtick-quoted) -- a bare Python import like `from core.gif_builder import
+    X` in an example snippet is not path-shaped and is not rewritten; the file
+    itself is still preserved (see copy_skill_assets), just at a moved path."""
     result = body
-    for src_name in mapped_dirs:
-        dest_rel = DIR_MAP[src_name]
+    for src_name, dest_rel in mapped_dirs:
         result = result.replace(f"{src_name}/", f"{dest_rel}/")
         result = result.replace(f"`{src_name}`", f"`{dest_rel}`")
     return result
@@ -402,6 +446,17 @@ def generate_package(
     canonical_system_md = templates_dir / "SYSTEM.md"
     write_file(skill_root / "SYSTEM.md", canonical_system_md.read_text(encoding="utf-8"))
 
+    # Dedupe by dest_rel (DIR_MAP can send two different source names to the same
+    # destination, e.g. references/ and examples/ both land in assets/references/)
+    # and strip the "assets/" prefix the README template already renders as the
+    # tree's own root line. A trailing slash marks directories; catch-all loose
+    # files (copy_skill_assets) have a real extension in their basename instead.
+    asset_tree_lines = []
+    for dest_rel in sorted({dest for _, dest in mapped_dirs}):
+        display = dest_rel[len("assets/"):] if dest_rel.startswith("assets/") else dest_rel
+        is_file = "." in Path(display).name
+        asset_tree_lines.append(f"    ├── {display}\n" if is_file else f"    ├── {display}/\n")
+
     tokens = {
         "NAME": name,
         "SLUG": slug,
@@ -414,7 +469,7 @@ def generate_package(
         "SYNOPSIS_BLOCK": synopsis_to_yaml_block(synopsis or SYNOPSIS_PLACEHOLDER),
         "AUTHOR": dest_account,
         "AUTHOR_EMAIL": author_email,
-        "TYPE": "instructional" if not mapped_dirs or "scripts" not in mapped_dirs else "procedural",
+        "TYPE": "instructional" if not any(src == "scripts" for src, _ in mapped_dirs) else "procedural",
         "LICENSE": spdx_license,
         "MINIMUM_RUNTIME": MINIMUM_RUNTIME,
         "SYSTEM_PROTOCOL_VERSION": SYSTEM_PROTOCOL_VERSION,
@@ -430,7 +485,7 @@ def generate_package(
         "CONVERTED_AT": today,
         "AISKILL_SPEC_VERSION": AISKILL_SPEC_VERSION,
         "LICENSE_ATTESTATION_BLOCK": attestation_manifest_block(tier, license_label),
-        "ASSET_TREE": "".join(f"    ├── {d}/\n" for d in mapped_dirs) or "    (no assets)\n",
+        "ASSET_TREE": "".join(asset_tree_lines) or "    (no assets)\n",
     }
 
     manifest_content = substitute(

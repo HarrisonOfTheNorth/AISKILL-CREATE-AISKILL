@@ -6,6 +6,15 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.4.1] — 2026-07-11
+
+### Fixed
+- `copy_skill_assets` (`convert.py`) no longer silently drops top-level source
+  directories or loose files outside the fixed `DIR_MAP` — caught converting
+  `claude-api`, `slack-gif-creator`, and `theme-factory`, all 3 of which
+  shipped with zero bundled files despite real content in non-standard
+  top-level directories. See `skill/CHANGELOG.md` for the full detail.
+
 ## [2.4.0] — 2026-07-10
 
 ### Added

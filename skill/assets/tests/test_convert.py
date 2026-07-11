@@ -15,6 +15,7 @@ from convert import (
     repo_name_from_origin_and_slug,
     id_from_dest_and_slug,
     classify_license_tier,
+    copy_skill_assets,
     rewrite_path_references,
     synopsis_to_yaml_block,
     SYNOPSIS_PLACEHOLDER,
@@ -137,7 +138,7 @@ def test_id_matches_actual_shipped_packages():
 
 def test_rewrites_bare_references_path():
     body = "See [International SEO](references/international-seo.md) for details."
-    result = rewrite_path_references(body, ["references"])
+    result = rewrite_path_references(body, [("references", "assets/references")])
     assert "assets/references/international-seo.md" in result
     assert "](references/" not in result
 
@@ -145,7 +146,7 @@ def test_rewrites_bare_references_path():
 def test_rewrites_bare_scripts_path():
     # Real sentence from webapp-testing's actual source SKILL.md.
     body = '- `scripts/with_server.py` - Manages server lifecycle (supports multiple servers)'
-    result = rewrite_path_references(body, ["scripts"])
+    result = rewrite_path_references(body, [("scripts", "assets/scripts")])
     assert "assets/scripts/with_server.py" in result
 
 
@@ -153,14 +154,93 @@ def test_rewrites_examples_to_references_mapping():
     # examples/ maps to assets/references/, not assets/examples/ -- examples/
     # doesn't survive as its own destination directory name.
     body = "- **examples/** - Examples showing common patterns:"
-    result = rewrite_path_references(body, ["examples"])
+    result = rewrite_path_references(body, [("examples", "assets/references")])
     assert "assets/references/" in result
+
+
+def test_rewrites_catch_all_directory_mapping():
+    # Not one of DIR_MAP's fixed 5 names -- copy_skill_assets's catch-all sends
+    # unrecognized directories to assets/templates/<original-name>/ (the bug
+    # that dropped claude-api/slack-gif-creator/theme-factory's real content
+    # entirely before this fix).
+    body = "Load the builder from `core/gif_builder.py`."
+    result = rewrite_path_references(body, [("core", "assets/templates/core")])
+    assert "assets/templates/core/gif_builder.py" in result
 
 
 def test_does_not_touch_unrelated_text():
     body = "This skill has no bundled scripts or references at all."
     result = rewrite_path_references(body, [])
     assert result == body
+
+
+# ── copy_skill_assets catch-all (the claude-api/slack-gif-creator/theme-factory
+# bug: non-standard top-level dirs/files silently dropped entirely) ──────────
+
+def test_copy_skill_assets_preserves_known_dirs(tmp_path):
+    src = tmp_path / "source-skill"
+    (src / "scripts").mkdir(parents=True)
+    (src / "scripts" / "run.py").write_text("print('hi')")
+    dest = tmp_path / "dest-skill"
+
+    mapped = copy_skill_assets(src, dest)
+
+    assert ("scripts", "assets/scripts") in mapped
+    assert (dest / "assets" / "scripts" / "run.py").read_text() == "print('hi')"
+
+
+def test_copy_skill_assets_catch_all_preserves_unrecognized_directory(tmp_path):
+    # Reproduces slack-gif-creator's actual source layout: a bare core/ module
+    # with no scripts/references/templates wrapper -- before this fix,
+    # copy_skill_assets silently produced zero files for this package.
+    src = tmp_path / "source-skill"
+    (src / "core").mkdir(parents=True)
+    (src / "core" / "gif_builder.py").write_text("class GIFBuilder: pass")
+    dest = tmp_path / "dest-skill"
+
+    mapped = copy_skill_assets(src, dest)
+
+    assert ("core", "assets/templates/core") in mapped
+    assert (dest / "assets" / "templates" / "core" / "gif_builder.py").read_text() == "class GIFBuilder: pass"
+
+
+def test_copy_skill_assets_catch_all_preserves_loose_file(tmp_path):
+    # Reproduces theme-factory's actual source layout: a loose showcase PDF
+    # sitting next to SKILL.md with no containing directory at all.
+    src = tmp_path / "source-skill"
+    src.mkdir(parents=True)
+    (src / "theme-showcase.pdf").write_bytes(b"%PDF-fake")
+    dest = tmp_path / "dest-skill"
+
+    mapped = copy_skill_assets(src, dest)
+
+    assert ("theme-showcase.pdf", "assets/templates/theme-showcase.pdf") in mapped
+    assert (dest / "assets" / "templates" / "theme-showcase.pdf").read_bytes() == b"%PDF-fake"
+
+
+def test_copy_skill_assets_skips_known_non_asset_files(tmp_path):
+    src = tmp_path / "source-skill"
+    src.mkdir(parents=True)
+    (src / "SKILL.md").write_text("# Skill")
+    (src / "LICENSE.txt").write_text("MIT")
+    dest = tmp_path / "dest-skill"
+
+    mapped = copy_skill_assets(src, dest)
+
+    assert mapped == []
+    assert not (dest / "assets").exists()
+
+
+def test_copy_skill_assets_skips_evals(tmp_path):
+    src = tmp_path / "source-skill"
+    (src / "evals").mkdir(parents=True)
+    (src / "evals" / "evals.json").write_text("[]")
+    dest = tmp_path / "dest-skill"
+
+    mapped = copy_skill_assets(src, dest)
+
+    assert mapped == []
+    assert not (dest / "assets").exists()
 
 
 # ── synopsis handling (.aiskill spec v2.3.0) ─────────────────────────────────

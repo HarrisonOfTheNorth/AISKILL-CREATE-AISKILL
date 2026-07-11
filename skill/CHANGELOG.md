@@ -6,6 +6,22 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.4.1] — 2026-07-11
+
+### Fixed
+- `copy_skill_assets` no longer silently drops top-level source directories or
+  loose files that fall outside the fixed `scripts`/`references`/`examples`/
+  `templates`/`assets` `DIR_MAP` — caught converting `claude-api` (per-language
+  subdirectories), `slack-gif-creator` (a bare `core/` module plus
+  `requirements.txt`), and `theme-factory` (`themes/` plus a loose showcase
+  PDF): all 3 were shipping with zero bundled files despite their `SKILL.md`
+  explicitly referencing that content, because `copy_skill_assets` only ever
+  looked at 5 fixed names. Unrecognized directories now copy through to
+  `assets/templates/<original-name>/`, unrecognized loose files copy straight
+  into `assets/templates/`, and `rewrite_path_references` was updated to take
+  `(src_name, dest_rel)` pairs instead of relying on `DIR_MAP` lookups, since
+  catch-all entries aren't in `DIR_MAP` at all.
+
 ## [2.4.0] — 2026-07-10
 
 ### Added

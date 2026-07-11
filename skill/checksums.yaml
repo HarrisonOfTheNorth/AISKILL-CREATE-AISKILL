@@ -1,13 +1,13 @@
 algorithm: sha256
 files:
-  CARD.md: 5eacf1c47062d0f6c15d44448f195ac540a7081a432351b113f49f4fb5522587
-  CHANGELOG.md: 3a0eaf5397bfc7b98ff5d222f5862771fbe3c83d6cf80a66accd0bf8f6c715f5
+  CARD.md: 3dcbcb54c03c7647a353102f570307539304f77bb8dedf01e7658a0450b073a6
+  CHANGELOG.md: 1fb3c043fecb0857b478b9831fd0a420172c0ce19b36a72c92bcb68576259042
   LICENSE.txt: f09f8eeb593e567b28ec7f0c23079fda2f627f14d05a3651f531a64c006d7086
   README.md: facd07be759d29cdf7ac0b2252cb706ce8fd60904930988fe53915ae2729b246
   SKILL.md: dbb90699f8797d444c9a0ae0176e9f04942592e6de11ed3d7404a9cf6c0cf657
   SYSTEM.md: f7d9c4a38c55571a670c4d06c33a3a1c85e5a4f1dbe5536e375d3b63101d6a61
   assets/scripts/build_card.py: 3caf61d65c342f18588282daa63e71c76d7b3d9c05bd5961d3218986a040fa53
-  assets/scripts/convert.py: ff913551ccbd4448571b1719cb36243af811ba2e1c0ac20292643a73279c8800
+  assets/scripts/convert.py: 534a5dd367c902438927201a20678995d5ec693ff71be6317a76d89bc1d37acc
   assets/scripts/pack.py: 7c5ddcc444aaa8428a9a67e7ff9dd52c0c47876c5e1102a2d0c1db486ec126fc
   assets/scripts/scaffold.py: f82bcbc91fdc88790bd4ec252c22b8d1de7c2bbd760e7793e511ecab567a8e0e
   assets/templates/CHANGELOG.md.converted.template: 280a21b7c7932c57971f7ba22560a334e8a3550da410b6dd7d2d288ffc2e9742
@@ -20,8 +20,8 @@ files:
   assets/templates/manifest.yaml.converted.template: f5b5151e92016f3dc4fe6567763c314b955620f9c1043020f29b536c04b01d67
   assets/templates/manifest.yaml.template: c7d5b891593b10a6bb593374deb6b2e9f54f92a8542ebedd4df00b606d016a4a
   assets/templates/schema.json.template: 1bd6afcf36825d3e9b2e4dab0db078312e26932aa857ae7f2e2dea680e030e90
-  assets/tests/test_convert.py: 33e125e0e198d92e0f2d283fc0a98f18a354f8f645f2a8b5caf298a205881601
+  assets/tests/test_convert.py: 4d33271670bb77b5cb04094eaade30f41b7a71cbf734820e5e224927cee953d3
   assets/tests/test_pack.py: dbab026b0e6322b13da01e377fc69811d773204dffeb05964089a3a814cdc814
   assets/tests/test_scaffold.py: 107313aa2607d298fe69082cae178c325ecdcb195ef62696ba2573b0c0db95e2
   inputs/schema.json: 8d77541a2d8ed700e9207e9bfb352d9eee6cf861a705b2b011296b4ae453ac34
-  manifest.yaml: 332ff7bf84a940294ffda51fcf2a71f82f24fbb8b095bd07a363b9b59f2c6d29
+  manifest.yaml: f086a09706a5e4a113698e0e1362e452bd4e8561f4d19006fa5fc04b59d2c314

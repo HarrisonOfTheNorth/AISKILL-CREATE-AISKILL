@@ -28,7 +28,7 @@ classification, and the automatic assets/-prefixed path rewriting that
 conversion depends on, and every package it produces carries SYSTEM.md's
 external verification protocol from the moment it's created.
 
-**Version:** 2.4.0
+**Version:** 2.4.1
 **Author:** Anthony Harrison
 **License:** MIT
 **Package ID:** `com.openaiskillpackage.create-aiskill`
