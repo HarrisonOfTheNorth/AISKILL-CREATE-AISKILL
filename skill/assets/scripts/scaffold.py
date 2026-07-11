@@ -14,6 +14,12 @@ import uuid
 from datetime import date
 from pathlib import Path
 
+try:
+    import yaml
+except ImportError:
+    print("Error: PyYAML is required. Install with: pip install pyyaml", file=sys.stderr)
+    sys.exit(1)
+
 
 # ── Conventions (baked in per spec) ─────────────────────────────────────────
 
@@ -63,6 +69,17 @@ def synopsis_to_yaml_block(synopsis: str) -> str:
     under manifest.yaml's `synopsis: |` block scalar."""
     lines = synopsis.strip("\n").split("\n")
     return "\n".join(f"  {line}" if line else "" for line in lines)
+
+
+def yaml_quote(value: str) -> str:
+    """Returns value as a YAML-safe double-quoted scalar. manifest.yaml.template
+    substitutes NAME/DESCRIPTION as bare, unquoted scalars (`name: <<<NAME>>>`) --
+    a name or description containing a colon (e.g. "X: a subtitle") breaks that
+    plain substitution, since YAML reads "X: Y" as a nested mapping key/value
+    rather than plain text. Same class of bug convert.py's own NAME/DESCRIPTION
+    substitution had (caught converting transformer-lens); fixed here too since
+    Track A's --name/--description are just as free-form."""
+    return yaml.dump(value, default_style='"', width=float("inf")).strip()
 
 
 # ── Template substitution ────────────────────────────────────────────────────
@@ -210,12 +227,19 @@ def main():
         "gitignore.template":          repo_root / ".gitignore",
     }
 
+    # manifest.yaml substitutes NAME/DESCRIPTION as bare YAML scalars -- quote just
+    # for this one template. Every other template in the loop below (SKILL.md,
+    # CHANGELOG.md) renders the same tokens as plain markdown prose, where a colon
+    # is harmless, so the shared `tokens` dict itself must stay unquoted for those.
+    manifest_tokens = {**tokens, "NAME": yaml_quote(args.name), "DESCRIPTION": yaml_quote(args.description)}
+
     for tmpl_name, dest_path in template_map.items():
         tmpl_path = templates_dir / tmpl_name
         if not tmpl_path.exists():
             print(f"  [warn] template not found: {tmpl_path}", file=sys.stderr)
             continue
-        content = substitute(tmpl_path.read_text(encoding="utf-8"), tokens)
+        active_tokens = manifest_tokens if tmpl_name == "manifest.yaml.template" else tokens
+        content = substitute(tmpl_path.read_text(encoding="utf-8"), active_tokens)
         write_file(dest_path, content)
 
     # README.md — one canonical template, rendered once and written identically to

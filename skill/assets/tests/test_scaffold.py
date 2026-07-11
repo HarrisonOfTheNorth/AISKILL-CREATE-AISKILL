@@ -4,6 +4,8 @@ import re
 import uuid as uuid_module
 from pathlib import Path
 
+import yaml
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from scaffold import (
     slug_from_name,
@@ -13,6 +15,7 @@ from scaffold import (
     capabilities_to_yaml_list,
     synopsis_to_yaml_block,
     substitute,
+    yaml_quote,
 )
 
 
@@ -119,3 +122,19 @@ def test_readme_skill_templates_are_retired():
     templates_dir = Path(__file__).parent.parent / "templates"
     assert not (templates_dir / "README.skill.md.template").exists()
     assert not (templates_dir / "README.skill.md.converted.template").exists()
+
+
+# ── yaml_quote (same manifest.yaml colon-breaks-parsing bug convert.py had --
+# Track A's --name/--description are just as free-form, fixed here too) ──────
+
+def test_yaml_quote_name_with_colon_round_trips():
+    name = "My Skill: A Subtitle With a Colon"
+    quoted = yaml_quote(name)
+    parsed = yaml.safe_load(f"name: {quoted}")
+    assert parsed == {"name": name}
+
+
+def test_yaml_quote_plain_string_still_parses_correctly():
+    quoted = yaml_quote("My Cool Skill")
+    parsed = yaml.safe_load(f"name: {quoted}")
+    assert parsed == {"name": "My Cool Skill"}

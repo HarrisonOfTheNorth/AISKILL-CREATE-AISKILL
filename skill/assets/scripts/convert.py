@@ -123,6 +123,17 @@ def synopsis_to_yaml_block(synopsis: str) -> str:
     return "\n".join(f"  {line}" if line else "" for line in lines)
 
 
+def yaml_quote(value: str) -> str:
+    """Returns value as a YAML-safe double-quoted scalar. manifest.yaml.converted
+    .template substitutes NAME/DESCRIPTION as bare, unquoted scalars (`name:
+    <<<NAME>>>`) -- a source skill whose title contains a colon (e.g.
+    "TransformerLens: Mechanistic Interpretability for Transformers") breaks that
+    plain substitution, since YAML reads "X: Y" as a nested mapping key/value
+    rather than plain text. Caught converting transformer-lens, whose real title
+    is exactly that shape."""
+    return yaml.dump(value, default_style='"', width=float("inf")).strip()
+
+
 def substitute(template: str, tokens: dict) -> str:
     result = template
     for key, value in tokens.items():
@@ -488,8 +499,13 @@ def generate_package(
         "ASSET_TREE": "".join(asset_tree_lines) or "    (no assets)\n",
     }
 
+    # manifest.yaml substitutes NAME/DESCRIPTION as bare YAML scalars -- quote just
+    # for this template. README.md and CHANGELOG.md render the same tokens as plain
+    # markdown prose (a colon in a heading is fine there), so the shared `tokens`
+    # dict itself must stay unquoted for those.
+    manifest_tokens = {**tokens, "NAME": yaml_quote(name), "DESCRIPTION": yaml_quote(tokens["DESCRIPTION"])}
     manifest_content = substitute(
-        (templates_dir / "manifest.yaml.converted.template").read_text(encoding="utf-8"), tokens
+        (templates_dir / "manifest.yaml.converted.template").read_text(encoding="utf-8"), manifest_tokens
     )
     write_file(skill_root / "manifest.yaml", manifest_content)
 

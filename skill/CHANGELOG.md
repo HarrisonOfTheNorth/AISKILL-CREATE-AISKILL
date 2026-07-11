@@ -6,6 +6,18 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.4.2] — 2026-07-11
+
+### Fixed
+- `manifest.yaml`'s `name`/`description` substitution is now YAML-safely quoted --
+  a source skill title containing a colon (e.g. "TransformerLens: Mechanistic
+  Interpretability for Transformers") previously broke `manifest.yaml` parsing
+  entirely, since the bare unquoted substitution let YAML read `X: Y` as a
+  nested mapping key/value rather than plain text. Fixed in both `convert.py`
+  and `scaffold.py` with a new `yaml_quote()` helper in each, applied only to
+  the `manifest.yaml` substitution -- `README.md`/`CHANGELOG.md` keep the same
+  tokens unquoted, since a colon in markdown prose is harmless there.
+
 ## [2.4.1] — 2026-07-11
 
 ### Fixed

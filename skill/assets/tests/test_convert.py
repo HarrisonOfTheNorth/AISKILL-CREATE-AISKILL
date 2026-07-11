@@ -8,6 +8,8 @@ proprietary notice that originally motivated the tier-3 gate.
 import sys
 from pathlib import Path
 
+import yaml
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from convert import (
     slug_from_path,
@@ -18,6 +20,7 @@ from convert import (
     copy_skill_assets,
     rewrite_path_references,
     synopsis_to_yaml_block,
+    yaml_quote,
     SYNOPSIS_PLACEHOLDER,
 )
 
@@ -261,3 +264,44 @@ def test_readme_converted_template_has_synopsis_token():
     tmpl_path = Path(__file__).parent.parent / "templates" / "README.repo.md.converted.template"
     content = tmpl_path.read_text(encoding="utf-8")
     assert "<<<SYNOPSIS>>>" in content
+
+
+# ── yaml_quote (the transformer-lens bug: an unquoted "name:" substitution whose
+# own value contains a colon breaks manifest.yaml's YAML parsing entirely) ──────
+
+def test_yaml_quote_real_transformer_lens_title():
+    # The actual title that broke manifest.yaml parsing in production.
+    name = "TransformerLens: Mechanistic Interpretability for Transformers"
+    quoted = yaml_quote(name)
+    parsed = yaml.safe_load(f"name: {quoted}")
+    assert parsed == {"name": name}
+
+
+def test_yaml_quote_plain_string_still_parses_correctly():
+    quoted = yaml_quote("Simple Skill Name")
+    parsed = yaml.safe_load(f"name: {quoted}")
+    assert parsed == {"name": "Simple Skill Name"}
+
+
+def test_yaml_quote_handles_embedded_double_quotes():
+    quoted = yaml_quote('Has a "quoted" word')
+    parsed = yaml.safe_load(f"name: {quoted}")
+    assert parsed == {"name": 'Has a "quoted" word'}
+
+
+def test_yaml_quote_handles_hash_character():
+    # A bare "#" mid-scalar can also be read as a comment start in some contexts --
+    # confirm the quoted form round-trips regardless.
+    quoted = yaml_quote("Skill for #trending topics")
+    parsed = yaml.safe_load(f"name: {quoted}")
+    assert parsed == {"name": "Skill for #trending topics"}
+
+
+def test_yaml_quote_does_not_wrap_output_across_lines():
+    # PyYAML's default line-wrapping (~80 chars) would corrupt a single-line
+    # substitution if not disabled -- confirm a long description stays one line.
+    long_description = "A " + ("very " * 30) + "long description with a colon: right here."
+    quoted = yaml_quote(long_description)
+    assert "\n" not in quoted
+    parsed = yaml.safe_load(f"description: {quoted}")
+    assert parsed == {"description": long_description}

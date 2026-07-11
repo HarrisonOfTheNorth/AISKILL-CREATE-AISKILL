@@ -6,6 +6,14 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.4.2] — 2026-07-11
+
+### Fixed
+- `manifest.yaml`'s `name`/`description` substitution (`convert.py` and
+  `scaffold.py`) is now YAML-safely quoted -- a source title containing a
+  colon previously broke `manifest.yaml` parsing entirely. See
+  `skill/CHANGELOG.md` for the full detail.
+
 ## [2.4.1] — 2026-07-11
 
 ### Fixed
