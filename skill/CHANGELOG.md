@@ -6,6 +6,35 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.1] — 2026-07-15
+
+### Changed
+- `CARD.md` and `README.md` restructured: the manifest-derived properties block (previously
+  `**Version:**`/`**Author:**`/`**License:**`/`**Package ID:**`/`**Package UUID:**`/
+  `**Homepage:**`, positioned after the description/synopsis, right before
+  Capabilities/Permissions) moved to directly under the H1, before the description
+  paragraph — a reader wants identity/provenance (who made this, what version, under what
+  license) before the prose, not after it.
+- Properties block gains three fields it previously lacked: `Type`, `Author Email`, `Tags`.
+  `Package UUID` renamed to `AI Skill UUID` for this package's kind — kept format-specific
+  (an `.mdskill` package's own generator will use `MD Skill UUID` instead) rather than a
+  single generic label, so a reader can tell which kind of package they're looking at without
+  checking the file extension.
+- `Name` deliberately not duplicated into the block — the H1 immediately above it already
+  shows it. `repository` deliberately excluded — a registry-side repo change could otherwise
+  mislead a reader relying on it. `description` stays a separate paragraph, not folded into
+  the block.
+- `README.md`'s H1 now renders the real skill name (e.g. `# Create AI Skill Package`) instead
+  of the repo slug.
+- This release hand-applies the new structure to this package's own `CARD.md`/`README.md`
+  only, as the reference implementation. `build_card.py` and both README templates
+  (`README.repo.md.template`, `README.repo.md.converted.template`) still generate the old
+  v2.5.0 structure and will be updated in a follow-up release so every future package gets
+  the new layout by default — see the Pre-Release Checklist and Template Token Reference in
+  `SKILL.md`, not yet updated to match.
+
+---
+
 ## [2.5.0] — 2026-07-15
 
 ### Changed

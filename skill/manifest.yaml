@@ -1,7 +1,7 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.5.0
+version: 2.5.1
 description: Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 synopsis: |
   Create AI Skill Package is the meta-skill that produces every other .aiskill
@@ -52,6 +52,9 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.5.1
+    changes:
+      - "CARD.md and README.md restructured: the manifest-derived properties block (AI Skill UUID, Package ID, Version, Type, Author, Author Email, License, Homepage, Tags) moved from after the description/synopsis to directly under the H1, so identity/provenance is visible before prose. README.md's H1 now uses the real skill name instead of the repo slug. Applies to every package this skill produces going forward -- build_card.py and the README templates will be updated to generate this structure by default in a follow-up release."
   - version: 2.5.0
     changes:
       - "BREAKING (.aiskill spec v2.4.0): README.repo.md.template and README.repo.md.converted.template restructured to open with three standardized headings, in order -- ## Synopsis (the synopsis field, verbatim), ## How It Works (Behavior), and ## What's in this .aiskill package? -- before the existing Prerequisites/Quick Start/Development Workflow/Version History/License/Contact sections, which are unchanged in content, just relocated after. Written for a reader browsing a skill library, not a repository"

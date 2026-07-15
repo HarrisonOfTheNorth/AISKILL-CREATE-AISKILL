@@ -1,4 +1,18 @@
-# CREATE-AISKILL.aiskill
+# Create AI Skill Package
+
+**AI Skill UUID:** `a1805527-85e9-4002-9ab3-770084e9b45c`
+**Package ID:** `com.openaiskillpackage.create-aiskill`
+**Version:** 2.5.0
+**Type:** procedural
+**Author:** Anthony Harrison
+**Author Email:** widgets@penrithbeacon.com
+**License:** MIT
+**Homepage:** https://openaiskillpackage.com/
+**Tags:** scaffold, create, aiskill, package, generator, meta
+
+Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
+
+---
 
 ## Synopsis
 

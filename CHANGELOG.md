@@ -6,6 +6,17 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.1] — 2026-07-15
+
+### Changed
+- CARD.md and README.md restructured: the manifest-derived properties block (AI Skill UUID,
+  Package ID, Version, Type, Author, Author Email, License, Homepage, Tags) moved from after
+  the description/synopsis to directly under the H1. README.md's H1 now uses the real skill
+  name instead of the repo slug. `build_card.py`/README templates to follow in a later
+  release so every future package gets this by default.
+
+---
+
 ## [2.5.0] — 2026-07-15
 
 ### Changed

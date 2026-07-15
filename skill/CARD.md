@@ -1,5 +1,15 @@
 # Create AI Skill Package
 
+**AI Skill UUID:** `a1805527-85e9-4002-9ab3-770084e9b45c`
+**Package ID:** `com.openaiskillpackage.create-aiskill`
+**Version:** 2.5.0
+**Type:** procedural
+**Author:** Anthony Harrison
+**Author Email:** widgets@penrithbeacon.com
+**License:** MIT
+**Homepage:** https://openaiskillpackage.com/
+**Tags:** scaffold, create, aiskill, package, generator, meta
+
 Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 
 Create AI Skill Package is the meta-skill that produces every other .aiskill
@@ -27,13 +37,6 @@ unit test suite covering both tracks' naming conventions, per-skill license
 classification, and the automatic assets/-prefixed path rewriting that
 conversion depends on, and every package it produces carries SYSTEM.md's
 external verification protocol from the moment it's created.
-
-**Version:** 2.5.0
-**Author:** Anthony Harrison
-**License:** MIT
-**Package ID:** `com.openaiskillpackage.create-aiskill`
-**Package UUID:** `a1805527-85e9-4002-9ab3-770084e9b45c`
-**Homepage:** https://openaiskillpackage.com/
 
 ---
 
