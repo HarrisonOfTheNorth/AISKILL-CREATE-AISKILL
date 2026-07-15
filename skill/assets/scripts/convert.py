@@ -486,6 +486,7 @@ def generate_package(
         "SYSTEM_PROTOCOL_VERSION": SYSTEM_PROTOCOL_VERSION,
         "CAPABILITIES_LIST": capabilities_to_yaml_list(""),  # always a placeholder -- never auto-inferred
         "TAGS": tags_to_yaml_inline(skill_tags),
+        "TAGS_LIST": ", ".join(skill_tags),  # plain comma-joined, for README prose (not YAML)
         "HOMEPAGE": HOMEPAGE,
         "REPOSITORY": f"https://github.com/{dest_account}/{repo_name}",
         "GITHUB_ORG": github_org,

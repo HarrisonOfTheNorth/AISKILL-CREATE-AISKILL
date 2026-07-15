@@ -1,14 +1,16 @@
-# <<<REPO_NAME>>>
+# <<<NAME>>>
 
-**<<<NAME>>>** — <<<DESCRIPTION>>>
+**AI Skill UUID:** `<<<UUID>>>`
+**Package ID:** `<<<ID>>>`
+**Version:** <<<VERSION>>>
+**Type:** <<<TYPE>>>
+**Author:** <<<AUTHOR>>>
+**Author Email:** <<<AUTHOR_EMAIL>>>
+**License:** <<<LICENSE>>>
+**Homepage:** <<<HOMEPAGE>>>
+**Tags:** <<<TAGS_LIST>>>
 
-| | |
-|---|---|
-| Version | `<<<VERSION>>>` |
-| License | `<<<LICENSE>>>` |
-| Author | <<<AUTHOR>>> |
-| Homepage | https://openaiskillpackage.com/ |
-| Spec | [Open AI Skill Package Specification](https://openaiskillpackage.com/) |
+<<<DESCRIPTION>>>
 
 ---
 

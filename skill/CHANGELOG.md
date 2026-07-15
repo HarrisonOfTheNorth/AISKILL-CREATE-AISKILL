@@ -6,6 +6,35 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.2] — 2026-07-15
+
+### Fixed
+- **Breaking.** `build_card.py`'s `CARD_TEMPLATE` reordered to match v2.5.1's hand-authored
+  reference exactly: properties block (UUID/Package ID/Version/Type/Author/Author
+  Email/License/Homepage/Tags) directly under the H1, before description/synopsis. New
+  `detect_kind()`/`uuid_label()` — checks for `assets/`/`inputs/` under `--skill-dir` (same
+  rule `main.js`'s `validatePackageFile()` uses) and picks **AI Skill UUID** or **MD Skill
+  UUID** accordingly, so the same script correctly serves both `.aiskill` and `.mdskill`
+  packages (confirmed: regenerating this package's own `CARD.md` now produces `kind=package`
+  / AI Skill UUID; regenerating `MDSKILL-ALERT-PROTOCOL`'s produces `kind=md` / MD Skill UUID,
+  byte-identical to its hand-authored v1.1.2).
+- `render_tags()` added; `type`/`authorEmail`/`tags` now read from `manifest.yaml`.
+- `scaffold.py`/`convert.py`: new `TAGS_LIST` token (plain comma-joined tag list, for README
+  prose) alongside the existing YAML-list-formatted `TAGS` token.
+- `README.repo.md.template` / `README.repo.md.converted.template`: same structural change —
+  properties block under the H1 (new tokens: `UUID`, `ID`, `TYPE`, `AUTHOR_EMAIL`,
+  `TAGS_LIST`, all of which already existed in both scripts' token dicts except `TAGS_LIST`),
+  H1 now `<<<NAME>>>` on both tracks (was `AISKILL-<<<SLUG>>>` / `<<<REPO_NAME>>>`), old
+  Name/Description line and properties table removed.
+- Fixed a real bug this caught: this package's own `CARD.md`, hand-authored in v2.5.1, still
+  read `**Version:** 2.5.0` after `manifest.yaml` had already been bumped to `2.5.1` in that
+  same release — caught by regenerating via the fixed tool and diffing against the hand-
+  authored file (the only diff was this line).
+- `SKILL.md`'s Step 6 wording, Template Token Reference, and Pre-Release Checklist still
+  describe the pre-v2.5.1 structure — not yet updated, follow-up needed.
+
+---
+
 ## [2.5.1] — 2026-07-15
 
 ### Changed

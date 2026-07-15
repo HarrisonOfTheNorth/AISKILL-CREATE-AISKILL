@@ -206,6 +206,7 @@ def main():
         "SYSTEM_PROTOCOL_VERSION": SYSTEM_PROTOCOL_VERSION,
         "CAPABILITIES_LIST": capabilities_to_yaml_list(args.capabilities),
         "TAGS": tags_to_yaml_inline(skill_tags),
+        "TAGS_LIST": ", ".join(skill_tags),  # plain comma-joined, for README prose (not YAML)
         "HOMEPAGE": HOMEPAGE,
         "REPOSITORY": f"https://github.com/{args.github_org}/{repo_name}",
         "GITHUB_ORG": args.github_org,

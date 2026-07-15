@@ -2,7 +2,7 @@
 
 **AI Skill UUID:** `a1805527-85e9-4002-9ab3-770084e9b45c`
 **Package ID:** `com.openaiskillpackage.create-aiskill`
-**Version:** 2.5.0
+**Version:** 2.5.2
 **Type:** procedural
 **Author:** Anthony Harrison
 **Author Email:** widgets@penrithbeacon.com

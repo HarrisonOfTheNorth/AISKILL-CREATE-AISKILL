@@ -1,19 +1,19 @@
 algorithm: sha256
 files:
-  CARD.md: 468a2df2802e6f863143d7498772ffe8b82a827c5d6a3f75c5a7728e38d97516
-  CHANGELOG.md: 232f0010f428e46946a1013962eea46dced659cdaa4a1176ee36b11d6568d574
+  CARD.md: 775099366afbc05251d8fdabf1db76098278dc7c17dc96d710a19828a19b86b1
+  CHANGELOG.md: d5e727e77008392578a0cad7fd08de0da4241802cf9916e259b229c6ffae3482
   LICENSE.txt: f09f8eeb593e567b28ec7f0c23079fda2f627f14d05a3651f531a64c006d7086
   README.md: e04172d44d898518e657dd482a944f3175729904774fbf9682e57fd0a0d53bfc
   SKILL.md: cb446800b70d147791dac3d629dc49875af5eee9eae16484da6cc61c35842d39
   SYSTEM.md: f7d9c4a38c55571a670c4d06c33a3a1c85e5a4f1dbe5536e375d3b63101d6a61
-  assets/scripts/build_card.py: cf098f65ae01a55677c3f4b94cdb64837677e4548d247ef717f25f69069815dd
-  assets/scripts/convert.py: 16b691128bc6e66b5d81fe93c378d34efab0800f99658122d46ef7b1002aa4da
+  assets/scripts/build_card.py: 535c8ff614d384c6ba1c61ce98c5f9ce9df7b9bb6b48bc2cbe7c085a5fc78933
+  assets/scripts/convert.py: 0006e92cc808edde6a48dce2c6d267e81abf47d5a51e0bf5c345921047aec255
   assets/scripts/pack.py: 7c5ddcc444aaa8428a9a67e7ff9dd52c0c47876c5e1102a2d0c1db486ec126fc
-  assets/scripts/scaffold.py: 057684420229560b875de4683a6e2f9abe27b962031ef842ca9baf9c462bacfd
+  assets/scripts/scaffold.py: e28a7a42fd4bbbd13f1938d6b2670ab79cc611cd4fa6ffc04345d61a5bbf6e47
   assets/templates/CHANGELOG.md.converted.template: 280a21b7c7932c57971f7ba22560a334e8a3550da410b6dd7d2d288ffc2e9742
   assets/templates/CHANGELOG.md.template: 0bbde63fa7a5918776289660292677054a69319abaf6d743cc9fda4ef75b186a
-  assets/templates/README.repo.md.converted.template: 8c15e55d36114b5d606833d58bccce8e30a4bee2333182a18ba306837b434782
-  assets/templates/README.repo.md.template: 92e3b2c44907f55604784482c750988ba902dc762f69944678fac71d1a73b8cf
+  assets/templates/README.repo.md.converted.template: d06169af7484534e1ca9a5819527a18986e1507dac5f257c18da0f5780b1f133
+  assets/templates/README.repo.md.template: b4053099265a6747f56b61a09ee4356da6144a87776de0424ccab07ec6f58cde
   assets/templates/SKILL.md.template: 8adb74f84ca82a50dc99bb69854efefa6b5880d860b6e97315e32b9660cd8892
   assets/templates/SYSTEM.md: f7d9c4a38c55571a670c4d06c33a3a1c85e5a4f1dbe5536e375d3b63101d6a61
   assets/templates/gitignore.template: 516e63c2ff5820dcfb628fa5cc4b63557dc3e294e446448e3bcbd35f473c1d6f
@@ -24,4 +24,4 @@ files:
   assets/tests/test_pack.py: dbab026b0e6322b13da01e377fc69811d773204dffeb05964089a3a814cdc814
   assets/tests/test_scaffold.py: 3a173034b482d34fea4837fa6c39d8b5cc355611e76689fca8a46d4f8467eede
   inputs/schema.json: 8d77541a2d8ed700e9207e9bfb352d9eee6cf861a705b2b011296b4ae453ac34
-  manifest.yaml: de8db1f6ded6b1c550ccfdf1a0939613d5cdf38d683f586118953e7521f5e497
+  manifest.yaml: a55c72da0ba85eb6bf0bbe48bd7e7986e5d543d3e8c49fa8a16e2ee542bc3f00
