@@ -1,7 +1,7 @@
 name: Create AI Skill Package
 id: com.openaiskillpackage.create-aiskill
 uuid: a1805527-85e9-4002-9ab3-770084e9b45c
-version: 2.4.2
+version: 2.5.0
 description: Scaffolds a new, originally-authored .aiskill package (Track A), or converts an existing skill from a foreign Agent Skills repo into one or more .aiskill packages with per-skill license gating (Track B).
 synopsis: |
   Create AI Skill Package is the meta-skill that produces every other .aiskill
@@ -52,6 +52,11 @@ repository: https://github.com/PenrithBeacon/AISKILL-CREATE-AISKILL
 tags: [scaffold, create, aiskill, package, generator, meta]
 type: procedural
 changelog:
+  - version: 2.5.0
+    changes:
+      - "BREAKING (.aiskill spec v2.4.0): README.repo.md.template and README.repo.md.converted.template restructured to open with three standardized headings, in order -- ## Synopsis (the synopsis field, verbatim), ## How It Works (Behavior), and ## What's in this .aiskill package? -- before the existing Prerequisites/Quick Start/Development Workflow/Version History/License/Contact sections, which are unchanged in content, just relocated after. Written for a reader browsing a skill library, not a repository"
+      - "build_card.py: added GENERATING_SKILL constant and referenced it explicitly in CARD.md's footer -- previously every CARD.md this script wrote said \"re-run build_card.py\" with no indication of which skill's script that was, meaningless for anyone reading any package other than this one"
+      - "SKILL.md Pre-Release Checklist (Track A) updated to check for the three standardized README headings by name, replacing the old generic \"describes purpose, prerequisites, quick start\" check"
   - version: 2.4.2
     changes:
       - "fix: manifest.yaml's name/description substitution is now YAML-safely quoted -- a source skill title containing a colon (e.g. \"TransformerLens: Mechanistic Interpretability for Transformers\") previously broke manifest.yaml parsing entirely, since the bare unquoted substitution let YAML read \"X: Y\" as a nested mapping key/value. Fixed in both convert.py and scaffold.py; new yaml_quote() helper added to each, applied only to the manifest.yaml substitution (README.md/CHANGELOG.md keep the same tokens unquoted, since a colon in markdown prose is harmless)."

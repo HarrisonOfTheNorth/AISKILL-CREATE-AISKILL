@@ -2,8 +2,6 @@
 
 **<<<NAME>>>** — <<<DESCRIPTION>>>
 
-<<<SYNOPSIS>>>
-
 | | |
 |---|---|
 | Version | `<<<VERSION>>>` |
@@ -14,10 +12,50 @@
 
 ---
 
-## What This Skill Does
+## Synopsis
+
+<<<SYNOPSIS>>>
+
+---
+
+## How It Works (Behavior)
 
 <<<DESCRIPTION>>> Upgraded from a skill originally authored by [@<<<SOURCE_OWNER>>>](https://github.com/<<<SOURCE_OWNER>>>) on GitHub — see **Origin** below for the full provenance trail.
 
+---
+
+## What's in this .aiskill package?
+
+```
+<<<SLUG>>>-<<<VERSION>>>.aiskill  (ZIP archive)
+├── manifest.yaml          # identity & metadata
+├── SYSTEM.md               # verification protocol (invariant)
+├── SKILL.md               # AI entry point — execution instructions
+├── README.md              # this file — byte-identical to the repo-root copy
+├── CHANGELOG.md           # version history
+├── LICENSE.txt            # original author's license, preserved
+├── checksums.yaml         # SHA-256 integrity hashes
+└── assets/
+<<<ASSET_TREE>>>
+```
+
+A package with no `assets/`/`inputs/` at all — nothing to run, nothing to test, nothing
+bundled — is instead built and distributed as a `.mdskill` package, a lighter sibling format
+for skills that are inert by nature. This one has them, so it's a full `.aiskill` package.
+
+---
+
+## Origin
+
+This package is a **converted** skill — not originally authored for the `.aiskill` format. Converted per the `.aiskill` <<<AISKILL_SPEC_VERSION>>> spec's [provenance rules](https://openaiskillpackage.com/#provenance):
+
+- **Original repository:** [<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>](https://github.com/<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>)
+- **Original skill path:** `<<<SOURCE_PATH>>>`
+- **Converted:** <<<CONVERTED_AT>>>
+- **Original license:** <<<LICENSE>>> (preserved unchanged, not re-licensed)
+
+The `.aiskill`-specific files (`manifest.yaml`, `SYSTEM.md`, this README's packaging sections, `checksums.yaml`) were added during conversion. The skill's actual instructions (`SKILL.md`) and reference material are the original author's content, unmodified beyond format conversion (YAML frontmatter → `manifest.yaml`, directory renames per `manifest.yaml`'s `source_*` fields, and `assets/`-prefixed path references).
+<<<LICENSE_ATTESTATION_SECTION>>>
 ---
 
 ## Prerequisites
@@ -40,36 +78,6 @@ Using the Skill Package at /path/to/<<<SLUG>>>-<<<VERSION>>>.aiskill,
 [describe what you want the skill to do]
 ```
 
----
-
-## Skill Archive Contents
-
-```
-<<<SLUG>>>-<<<VERSION>>>.aiskill  (ZIP archive)
-├── manifest.yaml          # identity & metadata
-├── SYSTEM.md               # verification protocol (invariant)
-├── SKILL.md               # AI entry point — execution instructions
-├── README.md              # this file — byte-identical to the repo-root copy
-├── CHANGELOG.md           # version history
-├── LICENSE.txt            # original author's license, preserved
-├── checksums.yaml         # SHA-256 integrity hashes
-└── assets/
-<<<ASSET_TREE>>>
-```
-
----
-
-## Origin
-
-This package is a **converted** skill — not originally authored for the `.aiskill` format. Converted per the `.aiskill` <<<AISKILL_SPEC_VERSION>>> spec's [provenance rules](https://openaiskillpackage.com/#provenance):
-
-- **Original repository:** [<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>](https://github.com/<<<SOURCE_OWNER>>>/<<<SOURCE_REPO>>>)
-- **Original skill path:** `<<<SOURCE_PATH>>>`
-- **Converted:** <<<CONVERTED_AT>>>
-- **Original license:** <<<LICENSE>>> (preserved unchanged, not re-licensed)
-
-The `.aiskill`-specific files (`manifest.yaml`, `SYSTEM.md`, this README's packaging sections, `checksums.yaml`) were added during conversion. The skill's actual instructions (`SKILL.md`) and reference material are the original author's content, unmodified beyond format conversion (YAML frontmatter → `manifest.yaml`, directory renames per `manifest.yaml`'s `source_*` fields, and `assets/`-prefixed path references).
-<<<LICENSE_ATTESTATION_SECTION>>>
 ---
 
 ## Development Workflow

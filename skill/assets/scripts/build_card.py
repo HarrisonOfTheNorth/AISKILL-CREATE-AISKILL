@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-build_card.py — CREATE-AISKILL v2.4.0
+build_card.py — CREATE-AISKILL v2.5.0
 Deterministically generates CARD.md from manifest.yaml.
 Same inputs always produce the same output — CARD.md is never hand-edited.
 """
@@ -8,6 +8,13 @@ Same inputs always produce the same output — CARD.md is never hand-edited.
 import argparse
 import sys
 from pathlib import Path
+
+# Named explicitly so every CARD.md this script produces can say, in its own footer, which
+# skill's build_card.py generated it -- a CARD.md travels inside the *target* package (e.g.
+# MDSKILL-ALERT-PROTOCOL's), not the skill that made it, so without this the footer's "do
+# not hand-edit, re-run build_card.py" instruction pointed at nothing findable for anyone
+# reading any package other than this one.
+GENERATING_SKILL = "AISKILL-CREATE-AISKILL"
 
 try:
     import yaml
@@ -74,8 +81,9 @@ CARD_TEMPLATE = """# {name}
 
 ---
 
-*Generated deterministically by `build_card.py` from `manifest.yaml` — do not hand-edit.
-Re-run `build_card.py` after any `manifest.yaml` change, before packaging.*
+*Generated deterministically by `build_card.py`, part of the **{generating_skill}** skill,
+from this package's own `manifest.yaml` — do not hand-edit. Re-run `build_card.py` after any
+`manifest.yaml` change, before packaging.*
 """
 
 
@@ -92,6 +100,7 @@ def build_card(manifest: dict) -> str:
         id=manifest.get("id", ""),
         uuid=manifest.get("uuid", ""),
         homepage=manifest.get("homepage", ""),
+        generating_skill=GENERATING_SKILL,
         capabilities=render_capabilities(manifest.get("capabilities", [])),
         permissions=render_permissions(manifest.get("permissions", {})),
     )

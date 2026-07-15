@@ -6,6 +6,24 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.0] — 2026-07-15
+
+### Changed
+- **Breaking** (`.aiskill` spec v2.4.0): `README.repo.md.template` and
+  `README.repo.md.converted.template` restructured to open with three standardized headings,
+  in order — `## Synopsis` (the `synopsis` field, verbatim), `## How It Works (Behavior)`,
+  and `## What's in this .aiskill package?` — before the existing Prerequisites/Quick
+  Start/Development Workflow/Version History/License/Contact sections, which are unchanged in
+  content, just relocated after. Written for a reader browsing a skill library, not a
+  repository.
+- `build_card.py`: added a `GENERATING_SKILL` constant and referenced it explicitly in
+  `CARD.md`'s footer — previously every `CARD.md` this script wrote said "re-run
+  build_card.py" with no indication of which skill's script that was, meaningless for anyone
+  reading any package other than this one.
+- `SKILL.md` Pre-Release Checklist (Track A) updated to check for the three standardized
+  README headings by name, replacing the old generic "describes purpose, prerequisites, quick
+  start" check.
+
 ## [2.4.2] — 2026-07-11
 
 ### Fixed

@@ -1,5 +1,37 @@
 # CREATE-AISKILL.aiskill
 
+## Synopsis
+
+Create AI Skill Package is the meta-skill that produces every other .aiskill
+package in this ecosystem. It has two tracks: scaffold a brand-new,
+originally-authored package from a plain-language description of what it
+should do (Track A), or convert an existing skill already built to the open
+Agent Skills format -- SKILL.md with YAML frontmatter, as used by Claude
+Code, Cursor, and others -- into one or more .aiskill packages, carrying
+forward the original license and provenance rather than re-authoring it
+from scratch (Track B).
+
+Reach for Track A whenever a procedure is worth turning into a verified,
+versioned, unit-tested package instead of a prompt kept in a notes file --
+something you or a team will run repeatedly and want to trust. Reach for
+Track B when a skill already exists for a different AI agent format and
+you want it brought into this ecosystem's stronger verification model:
+mandatory unit testing, checksummed integrity, and a registry-based
+external verification check that neither the Agent Skills format nor most
+other skill formats provide on their own.
+
+This is the one .aiskill package that was not itself produced by another
+.aiskill package -- every package that exists or will exist in this
+ecosystem was scaffolded or converted using this one. It ships with a full
+unit test suite covering both tracks' naming conventions, per-skill license
+classification, and the automatic assets/-prefixed path rewriting that
+conversion depends on, and every package it produces carries SYSTEM.md's
+external verification protocol from the moment it's created.
+
+---
+
+## How It Works (Behavior)
+
 This is the skill that creates skills. Each one lives as a single file with a `.aiskill` extension — a ZIP archive at its core, small enough to share in a message, complete enough to stand alone. Before diving into what it does, it's worth taking a moment to understand the world it belongs to, because that context is what makes this particular package so significant.
 
 Create AI Skill Package is the meta-skill that produces every other `.aiskill` package in this ecosystem. It has two tracks: scaffold a brand-new, originally-authored package from a plain-language description of what it should do (Track A), or convert an existing skill already built to the open Agent Skills format — `SKILL.md` with YAML frontmatter, as used by Claude Code, Cursor, and others — into one or more `.aiskill` packages, carrying forward the original license and provenance rather than re-authoring it from scratch (Track B).
@@ -7,6 +39,40 @@ Create AI Skill Package is the meta-skill that produces every other `.aiskill` p
 Reach for Track A whenever a procedure is worth turning into a verified, versioned, unit-tested package instead of a prompt kept in a notes file — something you or a team will run repeatedly and want to trust. Reach for Track B when a skill already exists for a different AI agent format and you want it brought into this ecosystem's stronger verification model: mandatory unit testing, checksummed integrity, and a registry-based external verification check that neither the Agent Skills format nor most other skill formats provide on their own.
 
 This is the one `.aiskill` package that was not itself produced by another `.aiskill` package — every package that exists or will exist in this ecosystem was scaffolded or converted using this one. It ships with a full unit test suite covering both tracks' naming conventions, per-skill license classification, and the automatic `assets/`-prefixed path rewriting that conversion depends on, and every package it produces carries `SYSTEM.md`'s external verification protocol from the moment it's created.
+
+When you run it, the agent asks whether you're building something new or bringing in a skill that already exists elsewhere, gathers what it needs in plain conversation, and hands you back a complete, versioned, tested `.aiskill` package — see **This Skill in Particular** below for the full walkthrough of either path.
+
+---
+
+## What's in this .aiskill package?
+
+```
+CREATE-AISKILL-2.5.0.aiskill  (ZIP archive)
+├── manifest.yaml          # identity & metadata
+├── SYSTEM.md               # verification protocol (invariant)
+├── SKILL.md               # AI entry point — execution instructions
+├── CARD.md                # human-facing summary, generated from manifest.yaml
+├── README.md              # this file — byte-identical to the repo-root copy
+├── CHANGELOG.md           # version history
+├── LICENSE.txt            # MIT license text
+├── checksums.yaml         # SHA-256 integrity hashes
+├── assets/
+│   ├── scripts/
+│   │   ├── scaffold.py    # Track A — builds a new package from scratch
+│   │   ├── convert.py     # Track B — converts an existing Agent Skills-format skill
+│   │   ├── pack.py        # zips a finished skill/ directory into a .aiskill archive
+│   │   └── build_card.py  # deterministically generates CARD.md from manifest.yaml
+│   ├── templates/          # manifest.yaml/README.md/CHANGELOG.md/SYSTEM.md templates
+│   │                        # scaffold.py and convert.py render into a new package
+│   └── tests/              # unit tests covering both tracks
+└── inputs/
+    └── schema.json         # input schema for this skill's own runtime inputs
+```
+
+A package with no `assets/`/`inputs/` at all — nothing to run, nothing to test, nothing
+bundled — is instead built and distributed as a `.mdskill` package, a lighter sibling format
+for skills that are inert by nature. This one has real scripts and tests, so it's a full
+`.aiskill` package.
 
 ---
 
@@ -84,7 +150,7 @@ If you are new to AI Skill Packages, you can ignore this section entirely and sk
 
 Give your AI agent this prompt — nothing more is needed to begin:
 
-> _Run the Skill Package at /path/to/CREATE-AISKILL-2.4.0.aiskill_
+> _Run the Skill Package at /path/to/CREATE-AISKILL-2.5.0.aiskill_
 
 That is the complete minimal prompt. The agent opens the package, reads its entry point, and starts a conversation with you to gather what it needs. It will typically ask:
 
@@ -98,13 +164,13 @@ You can answer in any order and in any amount of detail. If your opening prompt 
 
 **A fuller prompt — for illustration:**
 
-> _Run the Skill Package at /path/to/CREATE-AISKILL-2.4.0.aiskill — I want to create a skill that helps a home cook plan a week of dinners based on what's in season and any dietary restrictions in the household._
+> _Run the Skill Package at /path/to/CREATE-AISKILL-2.5.0.aiskill — I want to create a skill that helps a home cook plan a week of dinners based on what's in season and any dietary restrictions in the household._
 
 With a prompt like that, the agent already knows the name, the purpose, and the audience. It may only need to ask one or two follow-up questions before it gets to work.
 
 **Converting a skill from the Agent Skills format:**
 
-> _Run the Skill Package at /path/to/CREATE-AISKILL-2.4.0.aiskill — I found a skill built to the [Agent Skills specification](https://agentskills.io/specification) that I'd like turned into a proper [AI Skill Package](https://openaiskillpackage.com/)._
+> _Run the Skill Package at /path/to/CREATE-AISKILL-2.5.0.aiskill — I found a skill built to the [Agent Skills specification](https://agentskills.io/specification) that I'd like turned into a proper [AI Skill Package](https://openaiskillpackage.com/)._
 
 The agent will ask which skill (or skills) you mean, check what license the original was released under, and only proceed on anything unclear or restricted once you've confirmed you're allowed to.
 

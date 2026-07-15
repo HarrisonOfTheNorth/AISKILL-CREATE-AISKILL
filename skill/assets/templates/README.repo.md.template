@@ -2,8 +2,6 @@
 
 **<<<NAME>>>** — <<<DESCRIPTION>>>
 
-<<<SYNOPSIS>>>
-
 | | |
 |---|---|
 | Version | `<<<VERSION>>>` |
@@ -14,11 +12,44 @@
 
 ---
 
-## What This Skill Does
+## Synopsis
 
-[Replace this section with a detailed description of what the skill does, when to use it,
-and what problem it solves. Be specific — someone reading this README should understand
-whether this skill is what they need without having to open the .aiskill file.]
+<<<SYNOPSIS>>>
+
+---
+
+## How It Works (Behavior)
+
+[Replace this section with a detailed, reader-facing account of what happens when the skill
+runs — written for someone reading this from inside a skill library, not for someone browsing
+a repository. Be specific about what the AI agent actually does, in what order, and what the
+person on the other end sees or experiences as a result. Someone reading this should
+understand whether this skill is what they need without having to open the package itself.]
+
+---
+
+## What's in this .aiskill package?
+
+```
+<<<SLUG>>>-<<<VERSION>>>.aiskill  (ZIP archive)
+├── manifest.yaml          # identity & metadata
+├── SKILL.md               # AI entry point — execution instructions
+├── README.md              # this file — byte-identical to the repo-root copy
+├── CHANGELOG.md           # version history
+├── checksums.yaml         # SHA-256 integrity hashes
+├── assets/
+│   ├── scripts/           # execution scripts
+│   │   └── [script].py
+│   ├── templates/         # content templates (if any)
+│   └── tests/             # unit tests
+│       └── test_[script].py
+└── inputs/
+    └── schema.json        # input schema
+```
+
+A package with no `assets/`/`inputs/` at all — nothing to run, nothing to test, nothing
+bundled — is instead built and distributed as a `.mdskill` package, a lighter sibling format
+for skills that are inert by nature. This one has them, so it's a full `.aiskill` package.
 
 ---
 
@@ -40,27 +71,6 @@ Before using this skill, ensure the following are available in the AI agent's en
 ```
 Using the Skill Package at /path/to/<<<SLUG>>>-<<<VERSION>>>.aiskill,
 [describe what you want the skill to do, e.g. 'audit the contrast of /path/to/saved-page.html']
-```
-
----
-
-## Skill Archive Contents
-
-```
-<<<SLUG>>>-<<<VERSION>>>.aiskill  (ZIP archive)
-├── manifest.yaml          # identity & metadata
-├── SKILL.md               # AI entry point — execution instructions
-├── README.md              # this file — byte-identical to the repo-root copy
-├── CHANGELOG.md           # version history
-├── checksums.yaml         # SHA-256 integrity hashes
-├── assets/
-│   ├── scripts/           # execution scripts
-│   │   └── [script].py
-│   ├── templates/         # content templates (if any)
-│   └── tests/             # unit tests
-│       └── test_[script].py
-└── inputs/
-    └── schema.json        # input schema
 ```
 
 ---

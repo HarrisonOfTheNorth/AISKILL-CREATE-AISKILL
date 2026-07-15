@@ -6,6 +6,16 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.0] — 2026-07-15
+
+### Changed
+- **Breaking** (`.aiskill` spec v2.4.0): `README.md` now opens with three standardized
+  headings, in order — `## Synopsis`, `## How It Works (Behavior)`, `## What's in this
+  .aiskill package?` — before the existing prerequisites/quick-start/development-workflow
+  content, which is unchanged, just relocated. See `skill/CHANGELOG.md` for the full detail.
+- `build_card.py`'s `CARD.md` footer now names the generating skill explicitly, instead of an
+  unattributed "re-run build_card.py" instruction.
+
 ## [2.4.2] — 2026-07-11
 
 ### Fixed

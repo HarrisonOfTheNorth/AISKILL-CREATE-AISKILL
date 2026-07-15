@@ -28,7 +28,7 @@ classification, and the automatic assets/-prefixed path rewriting that
 conversion depends on, and every package it produces carries SYSTEM.md's
 external verification protocol from the moment it's created.
 
-**Version:** 2.4.2
+**Version:** 2.5.0
 **Author:** Anthony Harrison
 **License:** MIT
 **Package ID:** `com.openaiskillpackage.create-aiskill`
@@ -51,5 +51,6 @@ external verification protocol from the moment it's created.
 
 ---
 
-*Generated deterministically by `build_card.py` from `manifest.yaml` — do not hand-edit.
-Re-run `build_card.py` after any `manifest.yaml` change, before packaging.*
+*Generated deterministically by `build_card.py`, part of the **AISKILL-CREATE-AISKILL** skill,
+from this package's own `manifest.yaml` — do not hand-edit. Re-run `build_card.py` after any
+`manifest.yaml` change, before packaging.*

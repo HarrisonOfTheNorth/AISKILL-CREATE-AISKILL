@@ -616,8 +616,12 @@ single-template-written-twice rule as Track A above.
 - [ ] Repo-root `README.md` and `skill/README.md` are byte-identical —
       `pack.py` enforces this and will refuse to package otherwise, but check
       neither copy was hand-edited independently after generation
-- [ ] `README.md` describes the skill purpose, prerequisites, and quick start,
-      and is complete and suitable for public viewing on GitHub
+- [ ] `README.md` opens with the three standardized headings in order —
+      `## Synopsis` (the manifest's `synopsis` field, verbatim), `## How It Works
+      (Behavior)`, `## What's in this .aiskill package?` — written for someone
+      reading it from inside a skill library, not for someone browsing a
+      repository, before the remaining prerequisites/quick-start/development
+      sections. Complete and suitable for public viewing on GitHub.
 - [ ] `skill/CHANGELOG.md` has an entry for v1.0.0
 - [ ] `skill/inputs/schema.json` accurately describes the inputs (if any)
 - [ ] pack.py has been run and `skill/checksums.yaml` is present
